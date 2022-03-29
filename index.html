@@ -22,8 +22,8 @@
         <!-- mapbox config -->
         <script src="js/config.js"></script>
         <!-- threebox CSS and JS-->
-        <!--link href="css/threebox.css" rel="stylesheet" /-->
-        <script src="js/threebox.js" type="text/javascript"></script>
+        <!--link href="https://unpkg.com/threebox-plugin/dist/threebox.css" rel="stylesheet" /-->
+        <script src="https://unpkg.com/threebox-plugin/dist/threebox.min.js" type="text/javascript"></script>
     </head>
     
     <body id="page-top">
@@ -98,7 +98,7 @@
                         [114.25090, 22.30540]];
                         let objHeight = [4.5, 3, 6.7, 2.5, 5];
                         let items = objCoordinate.length;
-                        let minZoom = 16;
+                        let minZoom = 14;
                         let maxZoom = 22;
                         let toggleableLayerIds = [];
                        
@@ -202,8 +202,8 @@
 
                             function addModel(layerId, origin, height) {
                                 let options = {
-                                    type: 'gltf', 
-                                    obj: 'gltf/tree.glb', //model url
+                                    type: 'fbx', 
+                                    obj: 'model/treeplan1.fbx', //model url
                                     units: 'meters', //units in the default values are always in meters
                                     scale: height/4.5, // set tree_height/4.5
                                     rotation: { x: 90, y: 180, z: 0 }, //default rotation
