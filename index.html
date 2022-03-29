@@ -83,8 +83,8 @@
                             map.getCanvas().getContext('webgl'),
                             {
                                 defaultLights: true,
-                                enableSelectingObjects: true,
-                                //enableTooltips: true,
+                                enableSelectingObjects: false,
+                                enableTooltips: false,
                                 multiLayer: true, // this will create a default custom layer that will manage a single tb.update
                             }
                         );
@@ -3903,7 +3903,7 @@
                                     obj: path, //model url
                                     units: 'meters', //units in the default values are always in meters
                                     scale: height*2, // set scale using height
-                                    rotation: { x: 90, y: 180, z: rZ }, //default rotation
+                                    rotation: { x: 90, y: 180, z: 0 }, //default rotation
                                     anchor: 'center'
                                 }
                                 tb.loadObj(options, function (model) {
