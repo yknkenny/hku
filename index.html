@@ -83,6 +83,7 @@
                             map.getCanvas().getContext('webgl'),
                             {
                                 defaultLights: true,
+                                terrain: true,
                                 enableSelectingObjects: true,
                                 enableTooltips: true,
                                 multiLayer: true, // this will create a default custom layer that will manage a single tb.update
@@ -4117,7 +4118,7 @@
                                 }
                                 tb.loadObj(options, function (model) {
                                     model.setCoords(origin);
-                                    let l = map.getLayer(layerId);
+                                    //let l = map.getLayer(layerId);
                                     model.addTooltip(
                                         "Object: " + featype + "<br>" +
                                         "Object ID: " + oid + "<br>" +
