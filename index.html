@@ -32,7 +32,7 @@
         <!-- navigation bar-->
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
             <div class="container">
-                <a class="navbar-brand" href="#page-top"><img src="assets/img/navbar-logo.svg" alt="..." /></a>
+                <a class="navbar-brand" href="#page-top"><img src="assets/img/navbar-logo.svg" alt="Start Story" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars ms-1"></i>
@@ -65,14 +65,27 @@
                     <h2 class="section-heading text-uppercase">Computer Vision for On-street Tree Mapping</h2>
                     <h3 class="section-subheading text-muted">Using GSV images collected in Feb 2022 to map update on-street trees/plants along Tiu Keng Leng, Hong Kong</h3>
                     <div id="map"><div id="menu"></div></div>
+                    <div id="switcher" class="mapboxgl-ctrl mapboxgl-ctrl-group">
+                        <button class="mapboxgl-ctrl-fullscreen" type="button" aria-label="Enter fullscreen" style="width:40px">
+                            Ortho
+                        </button>
+                    </div>
 
                     <script>
+                        var mapStyleArr = [{
+                            name: "Topo",
+                            url: 'mapbox://styles/yknkenny/cl14u3pd1008714l9hgf8o1ym'
+                        },{
+                            name: "Ortho",
+                            url: "mapbox://styles/mapbox/satellite-v9"
+                        }]
+
                         mapboxgl.accessToken = config.accessToken;
                         
                         // add a map
                         var map = (window.map = new mapboxgl.Map({
                             container: 'map', // container ID
-                            style: 'mapbox://styles/yknkenny/cl14u3pd1008714l9hgf8o1ym', // style URL
+                            style: mapStyleArr[0].url, // style URL
                             center: [114.2509, 22.3054], // starting position [lng, lat]
                             zoom: 16, // starting zoom
                             hash: true,
@@ -85,7 +98,7 @@
                             map.getCanvas().getContext('webgl'),
                             {
                                 defaultLights: true,
-                                terrain: false,
+                                terrain: true,
                                 enableSelectingObjects: true,
                                 enableTooltips: true,
                                 multiLayer: true, // this will create a default custom layer that will manage a single tb.update
@@ -110,6 +123,16 @@
                             const popup = new mapboxgl.Popup({
                                 closeButton: false,
                             });
+
+                            // add the DEM source as a terrain layer with exaggerated height
+                            //map.addSource('mapbox-dem', {
+                            //    'type': 'raster-dem',
+                            //    'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+                            //    'tileSize': 512,
+                            //    //'maxzoom': 14,
+                            //});
+                            //map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.0 });
+                            //map.setPaintProperty('satellite', 'raster-opacity', 0.1);
 
                             /*
 
