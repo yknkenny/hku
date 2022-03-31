@@ -75,7 +75,7 @@
                         var mapStyleArr = [{
                             name: "Topo",
                             url: 'mapbox://styles/yknkenny/cl14u3pd1008714l9hgf8o1ym'
-                        },{
+                        }, {
                             name: "Ortho",
                             url: "mapbox://styles/mapbox/satellite-v9"
                         }]
@@ -86,7 +86,7 @@
                         var map = (window.map = new mapboxgl.Map({
                             container: 'map', // container ID
                             style: mapStyleArr[0].url, // style URL
-                            center: [114.2509, 22.3054], // starting position [lng, lat]
+                            center: obj3D[0].slice(1,3), // starting position [lng, lat]
                             zoom: 16, // starting zoom
                             hash: true,
                             antialias: true,
@@ -133,34 +133,6 @@
                             //});
                             //map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.0 });
                             //map.setPaintProperty('satellite', 'raster-opacity', 0.1);
-
-                            /*
-
-                            // source from tileset
-                            map.addSource('projectarea', {
-                                type: 'vector',
-                                url: 'mapbox://yknkenny.cl16d3fji4toe21prgnmtjl6d-0knig',
-                            });
-                            
-                            // data layer for tree
-                            map.addLayer({
-                                'id': 'treehk',
-                                'type': 'circle',
-                                'source': 'projectarea',
-                                'source-layer': 'Trees',
-                                'minzoom': 16,
-                                'layout': {
-                                    'visibility': 'visible',
-                                },
-                                'paint': {
-                                    'circle-radius': 5,
-                                    'circle-color': 'rgba(221,190,223,1)',
-                                    'circle-stroke-color': 'rgba(100,14,149,1)',
-                                    'circle-stroke-width': 1,
-                                },
-                            });
-
-                            */
 
                             // source from tileset
                             map.addSource('mapbox', {
@@ -895,6 +867,20 @@
         </div>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script>
+            // switcher
+            let index = 0;
+            const switcher = document.querySelector("#switcher");
+            switcher.addEventListener("click", ()=>{
+                map.setStyle(mapStyleArr[++index % 2].url)
+                const button = switcher.querySelector("button")
+                button.textContent = mapStyleArr[(index + 1) % 2].name;
+            })
+            const container = document.querySelector(".mapboxgl-ctrl-top-right");
+            console.log(container)
+            container.append(switcher)
+        </script>
 
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <!-- * *                               SB Forms JS                               * *-->
