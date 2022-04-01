@@ -178,7 +178,7 @@
                                     layer: obj3D[j-1][5] + obj3D[j-1][0],
                                     origin: obj3D[j-1].slice(1,3),
                                     height: obj3D[j-1][3],
-                                    rZ: obj3D[j-1][4],
+                                    rY: obj3D[j-1][4],
                                     featype: obj3D[j-1][5],
                                     path: obj3D[j-1][6],
                                 }
@@ -189,18 +189,18 @@
                             let i = 0;
                             toggleableLayerIds.forEach((l) => { //call each element in array
                                 i++;
-                                map.addLayer(createCustomLayer(l.oid, l.layer, l.origin, l.height, l.rZ, l.featype, l.path), 'waterway-label');
+                                map.addLayer(createCustomLayer(l.oid, l.layer, l.origin, l.height, l.rY, l.featype, l.path), 'waterway-label');
                                 tb.setLayerZoomRange(l.layer, minZoom, maxZoom);
                             });
 
-                            function createCustomLayer(oid, layerId, origin, height, rZ, featype, path) {
+                            function createCustomLayer(oid, layerId, origin, height, rY, featype, path) {
                                 //create the layer
                                 let customLayer3D = {
                                     id: layerId,
                                     type: 'custom',
                                     renderingMode: '3d',
                                     onAdd: function (map, gl) {
-                                        addModel(oid, layerId, origin, height, rZ, featype, path);
+                                        addModel(oid, layerId, origin, height, rY, featype, path);
                                     },
                                     render: function (gl, matrix) {
                                         //tb.update(); is not needed anymore if multiLayer : true
@@ -209,13 +209,13 @@
                                 return customLayer3D;
                             };
 
-                            function addModel(oid, layerId, origin, height, rZ, featype, path) {
+                            function addModel(oid, layerId, origin, height, rY, featype, path) {
                                 let options = {
                                     type: 'gltf',
                                     obj: path, //model url
                                     units: 'meters', //units in the default values are always in meters
                                     scale: height, // set scale using height
-                                    rotation: { x: 90, y: 180, z: 0 }, //default rotation
+                                    rotation: { x: 90, y: rY, z: 0}, //default rotation
                                     anchor: 'center'
                                 }
                                 tb.loadObj(options, function (model) {
