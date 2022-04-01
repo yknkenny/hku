@@ -111,7 +111,7 @@
                         let minZoom = 15.5;
                         let maxZoom = 24;
                         let toggleableLayerIds = [];
-                        /*
+                        /* for group toggle layers for imported 3D layers
                         let toggleFh = obj3D.filter(obj3D => obj3D.includes('FireHydrant'));
                         let toggleLp = obj3D.filter(obj3D => obj3D.includes('LampPost'));
                         let toggleGrass = obj3D.filter(obj3D => obj3D.includes('Grass'));
@@ -134,7 +134,7 @@
                             button.textContent = mapStyleArr[(index + 1) % 2].name;
                         })
                         const container = document.querySelector(".mapboxgl-ctrl-top-right");
-                        console.log(container)
+                        //console.log(container)
                         container.append(switcher)
 
                         // add map.on(load)
@@ -222,12 +222,12 @@
                                     model.setCoords(origin);
                                     let l = map.getLayer(layerId);
                                     model.addTooltip(
-                                       "<p id='tooltip3d'>" +
-                                        "Type: " + featype + "<br>" +
-                                        "Object ID: " + oid + "<br>" +
-                                        "Height: " + height + " meters" + "<br>" +
-                                        "Coordinate: " + origin[0] + ", " + origin[1] +
-                                        "</p>", true);
+                                       "<table id='tooltip3d'>" +
+                                        "<tr><th class='th1'>Type:</th>" + "<th class='th2'>" + featype + "</th></tr>" +
+                                        "<tr><th class='th1'>Object ID:</th>" + "<th class='th2'>" + oid + "</th></tr>" +
+                                        "<tr><th class='th1'>Height:</th>" + "<th class='th2'>" + height + " meters" + "</th></tr>" +
+                                        "<tr><th class='th1'>Coordinates:</th>" + "<th class='th2'>" + origin[0] + ", " + origin[1] + "</th></tr>" +
+                                        "</table>", true);
                                     tb.add(model, layerId);
                                 });
                             }

@@ -11851,6 +11851,16 @@ section#contact form#contactForm :-ms-input-placeholder {
 
 #tooltip3d {
   background-color: #e6edf0;
+  min-width: 300px;
+}
+
+.th1 {
+  width: 35%;
   text-align: left;
-  font-size: 16px;
+  font-size: 16px; 
+}
+
+.th2 {
+  text-align: left;
+  font-size: 16px; 
 }
