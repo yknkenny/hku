@@ -11848,3 +11848,9 @@ section#contact form#contactForm :-ms-input-placeholder {
 #menu a.active:hover {
   background: #729ea1;
 }
+
+#tooltip3d {
+  background-color: #e6edf0;
+  text-align: left;
+  font-size: 16px;
+}

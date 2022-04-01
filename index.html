@@ -66,28 +66,30 @@
                     <h3 class="section-subheading text-muted">Using GSV images collected in Feb 2022 to map update on-street trees/plants along Tiu Keng Leng, Hong Kong</h3>
                     <div id="map"><div id="menu"></div></div>
                     <div id="switcher" class="mapboxgl-ctrl mapboxgl-ctrl-group">
-                        <button class="mapboxgl-ctrl-fullscreen" type="button" aria-label="Enter fullscreen" style="width:40px">
+                        <button class="mapboxgl-ctrl-fullscreen" type="button" aria-label="Enter fullscreen" style="width:50px">
                             Ortho
                         </button>
                     </div>
 
                     <script>
+                        mapboxgl.accessToken = config.accessToken;
+                        
                         var mapStyleArr = [{
-                            name: "Topo",
+                            name: "Map",
                             url: 'mapbox://styles/yknkenny/cl14u3pd1008714l9hgf8o1ym'
                         }, {
-                            name: "Ortho",
+                            name: "Satellite",
                             url: "mapbox://styles/mapbox/satellite-v9"
                         }]
 
-                        mapboxgl.accessToken = config.accessToken;
-                        
                         // add a map
                         var map = (window.map = new mapboxgl.Map({
                             container: 'map', // container ID
                             style: mapStyleArr[0].url, // style URL
-                            center: obj3D[0].slice(1,3), // starting position [lng, lat]
-                            zoom: 16, // starting zoom
+                            center: [114.156455, 22.299903],
+                            zoom: 16.5,
+                            bearing: 24,
+                            pitch: 45,
                             hash: true,
                             antialias: true,
                         }));
@@ -106,9 +108,15 @@
                         );
 
                         let items = obj3D.length;
-                        let minZoom = 14;
-                        let maxZoom = 22;
+                        let minZoom = 15.5;
+                        let maxZoom = 24;
                         let toggleableLayerIds = [];
+                        /*
+                        let toggleFh = obj3D.filter(obj3D => obj3D.includes('FireHydrant'));
+                        let toggleLp = obj3D.filter(obj3D => obj3D.includes('LampPost'));
+                        let toggleGrass = obj3D.filter(obj3D => obj3D.includes('Grass'));
+                        let toggleTree = obj3D.filter(obj3D => obj3D.includes('Tree'));
+                        let toggleableLayerGp = ['FireHydrant', 'LampPost', 'Grass', 'Tree']; */
                        
                         // add zoom and rotation controls to the map
                         map.addControl(new mapboxgl.NavigationControl());
@@ -116,6 +124,19 @@
                         // add a full screen for map display
                         map.addControl(new mapboxgl.FullscreenControl());
                         
+
+                        // switcher
+                        let index = 0;
+                        const switcher = document.querySelector("#switcher");
+                        switcher.addEventListener("click", ()=>{
+                            map.setStyle(mapStyleArr[++index % 2].url)
+                            const button = switcher.querySelector("button")
+                            button.textContent = mapStyleArr[(index + 1) % 2].name;
+                        })
+                        const container = document.querySelector(".mapboxgl-ctrl-top-right");
+                        console.log(container)
+                        container.append(switcher)
+
                         // add map.on(load)
                         map.on('load', () => { 
                             
@@ -123,16 +144,6 @@
                             const popup = new mapboxgl.Popup({
                                 closeButton: false,
                             });
-
-                            // add the DEM source as a terrain layer with exaggerated height
-                            //map.addSource('mapbox-dem', {
-                            //    'type': 'raster-dem',
-                            //    'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
-                            //    'tileSize': 512,
-                            //    //'maxzoom': 14,
-                            //});
-                            //map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.0 });
-                            //map.setPaintProperty('satellite', 'raster-opacity', 0.1);
 
                             // source from tileset
                             map.addSource('mapbox', {
@@ -159,15 +170,16 @@
                                     'fill-extrusion-opacity': 0.3,                    
                                 }
                             });
+                            createButtons()
                             
                             for (let j = 1; j <= items; j++) {
                                 let l = {
                                     oid: obj3D[j-1][0],
-                                    layer: '3d' + obj3D[j-1][5] + obj3D[j-1][0],
+                                    layer: obj3D[j-1][5] + obj3D[j-1][0],
                                     origin: obj3D[j-1].slice(1,3),
                                     height: obj3D[j-1][3],
                                     rZ: obj3D[j-1][4],
-                                    featype: obj3D[5],
+                                    featype: obj3D[j-1][5],
                                     path: obj3D[j-1][6],
                                 }
                                 toggleableLayerIds.push(l); //append in array
@@ -199,7 +211,7 @@
 
                             function addModel(oid, layerId, origin, height, rZ, featype, path) {
                                 let options = {
-                                    type: 'gltf', 
+                                    type: 'gltf',
                                     obj: path, //model url
                                     units: 'meters', //units in the default values are always in meters
                                     scale: height, // set scale using height
@@ -208,44 +220,51 @@
                                 }
                                 tb.loadObj(options, function (model) {
                                     model.setCoords(origin);
-                                    //let l = map.getLayer(layerId);
+                                    let l = map.getLayer(layerId);
                                     model.addTooltip(
-                                        "Object: " + featype + "<br>" +
+                                       "<p id='tooltip3d'>" +
+                                        "Type: " + featype + "<br>" +
                                         "Object ID: " + oid + "<br>" +
                                         "Height: " + height + " meters" + "<br>" +
-                                        "Coordinate: " + origin[0] + ", " + origin[1], true);
+                                        "Coordinate: " + origin[0] + ", " + origin[1] +
+                                        "</p>", true);
                                     tb.add(model, layerId);
                                 });
-                            };
-
-
-                            /*
-
-                            // mouseover to get feature attributes
-                            // (reference: https://docs.mapbox.com/mapbox-gl-js/example/query-similar-features/)
-                            map.on('mouseover', 'treehk', (e) => {
-                                map.getCanvas().style.cursor = 'pointer';
-                                popup
-                                .setLngLat(e.lngLat)
-                                .setHTML(
-                                    'Tree ID: ' + e.features[0].id + '<br>' + 
-                                    'Tree Height: ' + parseFloat(e.features[0].properties.tree_height).toFixed(1) + ' meters' + '<br>' +
-                                    'Coordinates: ' + parseFloat(e.features[0].geometry.coordinates[1]).toFixed(5) + ', ' + parseFloat(e.features[0].geometry.coordinates[0]).toFixed(5))
-                                    .addTo(map);
-                                });
-                        
-                            // mouseleave to resume normal
-                            map.on('mouseleave', 'treehk', () => {
-                                map.getCanvas().style.cursor = '';
-                                popup.remove();
-                                //overlay.style.display = 'none';  // error appears when active
-                            });
-                            */
-
+                            }
                         });
 
 
+                        function createButtons() {
+                            var link = document.createElement('a');
+                            link.href = '#';
+                            link.className = 'active';
+                            link.textContent = '3D Building';
 
+                            link.onclick = function (e) {
+                                var clickedLayer = '3dbuildings';
+                                e.preventDefault();
+                                e.stopPropagation();
+
+                                var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+                                // toggle layer visibility by changing the layout object's visibility property
+                                if (visibility === 'visible') {
+                                    map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                                    this.className = '';
+                                    tb.toggleLayer(clickedLayer, false);
+
+                                } else {
+                                    this.className = 'active';
+                                    map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+                                    tb.toggleLayer(clickedLayer, true);
+                                }
+                            };
+
+                            var layers = document.getElementById('menu');
+                            layers.appendChild(link);
+                        }
+
+//https://gis.stackexchange.com/questions/207758/toggling-multiple-layers-with-one-click-mapbox-gl-js
 
                         // BELOW JS CODES/VARIABLES NEED TO BE REVIEWED
                         /* map.on('idle', () => {
@@ -868,19 +887,6 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-        <script>
-            // switcher
-            let index = 0;
-            const switcher = document.querySelector("#switcher");
-            switcher.addEventListener("click", ()=>{
-                map.setStyle(mapStyleArr[++index % 2].url)
-                const button = switcher.querySelector("button")
-                button.textContent = mapStyleArr[(index + 1) % 2].name;
-            })
-            const container = document.querySelector(".mapboxgl-ctrl-top-right");
-            console.log(container)
-            container.append(switcher)
-        </script>
 
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <!-- * *                               SB Forms JS                               * *-->
