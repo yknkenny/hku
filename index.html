@@ -53,7 +53,7 @@
         <header class="masthead">
             <div class="container">
                 <div class="masthead-subheading">Welcome to Kenny's Studio!</div>
-                <div class="masthead-heading text-uppercase">It's About Green Mapping Using Google Street View (GSV) and Convolutional Neural Network (CNN)</div>
+                <div class="masthead-heading text-uppercase">It's about Green and Road-side Mapping Using Google Street View (GSV) and R-CNN</div>
                 <a class="btn btn-primary btn-xl text-uppercase" href="#mapp">Tell Me from Map</a>
             </div>
         </header>
@@ -62,11 +62,12 @@
         <section class="page-section" id="mapp">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Computer Vision for On-street Tree Mapping</h2>
-                    <h3 class="section-subheading text-muted">Using GSV images collected in Feb 2022 to map update on-street trees/plants along Tiu Keng Leng, Hong Kong</h3>
-                    <div id="map"><div id="menu"></div></div>
-                    <div id="switcher" class="mapboxgl-ctrl mapboxgl-ctrl-group">
-                        <button class="mapboxgl-ctrl-fullscreen" type="button" aria-label="Enter fullscreen" style="width:50px">
+                    <h2 class="section-heading text-uppercase">Computer Vision for On-street Mapping</h2>
+                    <h3 class="section-subheading text-muted">Using GSV images collected in Sep 2016 and Feb 2021 to update on-street trees/plants and street furniture in West Kowloon Cultural District, Hong Kong</h3>
+                    <div id="map"></div>                    
+                    <div id="menu" class="mapboxgl-ctrl"></div>
+                    <div id="switcher" class="mapboxgl-ctrl">
+                        <button type="button", aria-label="Enter fullscreen">
                             Ortho
                         </button>
                     </div>
@@ -74,13 +75,17 @@
                     <script>
                         mapboxgl.accessToken = config.accessToken;
                         
+                        // switcher variable
                         var mapStyleArr = [{
                             name: "Map",
                             url: 'mapbox://styles/yknkenny/cl14u3pd1008714l9hgf8o1ym'
                         }, {
                             name: "Satellite",
-                            url: "mapbox://styles/mapbox/satellite-v9"
-                        }]
+                            url: "mapbox://styles/mapbox/satellite-streets-v11"
+                        }, {
+                            name: "Light",
+                            url: "mapbox://styles/mapbox/light-v10"
+                        }];
 
                         // add a map
                         var map = (window.map = new mapboxgl.Map({
@@ -125,18 +130,6 @@
                         map.addControl(new mapboxgl.FullscreenControl());
                         
 
-                        // switcher
-                        let index = 0;
-                        const switcher = document.querySelector("#switcher");
-                        switcher.addEventListener("click", ()=>{
-                            map.setStyle(mapStyleArr[++index % 2].url)
-                            const button = switcher.querySelector("button")
-                            button.textContent = mapStyleArr[(index + 1) % 2].name;
-                        })
-                        const container = document.querySelector(".mapboxgl-ctrl-top-right");
-                        //console.log(container)
-                        container.append(switcher)
-
                         // add map.on(load)
                         map.on('load', () => { 
                             
@@ -172,6 +165,45 @@
                             });
                             createButtons()
                             
+
+                            
+                            // switcher
+                            let index = 0;
+                            const switcher = document.querySelector("#switcher");
+                            switcher.addEventListener("click", ()=>{
+                                map.setStyle(mapStyleArr[++index % 3].url);
+                                const button = switcher.querySelector("button");
+                                button.textContent = mapStyleArr[(index + 1) % 3].name;
+                                //map.setLayoutProperty('3dbuildings', 'visibility', 'visible');
+                                //tb.toggleLayer(clickedLayer, true)
+                            })
+                            
+                            /* createButtons1()
+
+                            function createButtons1() {
+                                let index = 0;
+                                var link = document.createElement('a');
+                                link.href = '#';
+                                link.className = 'active';
+                                link.textContent = mapStyleArr[(index + 1) % 3].name;
+
+                                link.onclick = function (e) {
+                                    var clickedLayer = this.textContent;
+                                    e.preventDefault();
+                                    e.stopPropagation();
+
+                                    map.setStyle(mapStyleArr[++index % 3].url);
+                                    link.textContent = mapStyleArr[(index + 1) % 3].name;
+                                };
+                            };
+                            //var layer1 = document.getElementById('switcher');
+                            //layer1.appendChild(link); */
+                            
+                            const container = document.querySelector(".mapboxgl-ctrl-top-left");
+                            //console.log(container)
+                            container.append(switcher);
+
+
                             for (let j = 1; j <= items; j++) {
                                 let l = {
                                     oid: obj3D[j-1][0],
@@ -262,9 +294,13 @@
 
                             var layers = document.getElementById('menu');
                             layers.appendChild(link);
+
+                            const container = document.querySelector(".mapboxgl-ctrl-top-left");
+                            container.append(menu)
                         }
 
 //https://gis.stackexchange.com/questions/207758/toggling-multiple-layers-with-one-click-mapbox-gl-js
+//https://codepen.io/ZondaDesign/pen/xxVxZVR
 
                         // BELOW JS CODES/VARIABLES NEED TO BE REVIEWED
                         /* map.on('idle', () => {
@@ -329,7 +365,7 @@
             <div class="container">
                 <div class="row text-center">
                     <h2 class="section-heading text-uppercase">Advantages of Computer Vision for Mapping</h2>
-                    <h3 class="section-subheading text-muted">Not every mapping features are mapped and opened up by the government. Trees and plants in Hong Kong are the example. Mapping from computer vision provides an alternative way of data acquisition to understand our Earth.</h3>                
+                    <h3 class="section-subheading text-muted">Not every road-side features were surveyed, mapped and opened up by the government. Trees, plants and some types of street furniture (e.g. lightboxes) in Hong Kong are the example. Computer vision provides an alternative way of data acquisition to understand the morphology of our city.</h3>                
                     <div class="col-md-4">
                         <span class="fa-stack fa-4x">
                             <i class="fas fa-circle fa-stack-2x text-primary"></i>
