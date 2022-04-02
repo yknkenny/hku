@@ -77,15 +77,16 @@
                         
                         // switcher variable
                         var mapStyleArr = [{
-                            name: "Map",
+                            name: "Color Map",
                             url: 'mapbox://styles/yknkenny/cl14u3pd1008714l9hgf8o1ym'
                         }, {
                             name: "Satellite",
                             url: "mapbox://styles/mapbox/satellite-streets-v11"
                         }, {
-                            name: "Light",
-                            url: "mapbox://styles/mapbox/light-v10"
+                            name: "Chill Map",
+                            url: "mapbox://styles/yknkenny/cl1hk317i000z14qb9c6gnjl9"
                         }];
+                        //console.log(mapStyleArr.length)
 
                         // add a map
                         var map = (window.map = new mapboxgl.Map({
@@ -166,39 +167,16 @@
                             createButtons()
                             
 
-                            
                             // switcher
                             let index = 0;
                             const switcher = document.querySelector("#switcher");
                             switcher.addEventListener("click", ()=>{
-                                map.setStyle(mapStyleArr[++index % 3].url);
+                                map.setStyle(mapStyleArr[++index % mapStyleArr.length].url);
                                 const button = switcher.querySelector("button");
-                                button.textContent = mapStyleArr[(index + 1) % 3].name;
-                                //map.setLayoutProperty('3dbuildings', 'visibility', 'visible');
-                                //tb.toggleLayer(clickedLayer, true)
+                                button.textContent = mapStyleArr[(index + 1) % mapStyleArr.length].name;
                             })
-                            
-                            /* createButtons1()
 
-                            function createButtons1() {
-                                let index = 0;
-                                var link = document.createElement('a');
-                                link.href = '#';
-                                link.className = 'active';
-                                link.textContent = mapStyleArr[(index + 1) % 3].name;
-
-                                link.onclick = function (e) {
-                                    var clickedLayer = this.textContent;
-                                    e.preventDefault();
-                                    e.stopPropagation();
-
-                                    map.setStyle(mapStyleArr[++index % 3].url);
-                                    link.textContent = mapStyleArr[(index + 1) % 3].name;
-                                };
-                            };
-                            //var layer1 = document.getElementById('switcher');
-                            //layer1.appendChild(link); */
-                            
+                            // load switcher on map div
                             const container = document.querySelector(".mapboxgl-ctrl-top-left");
                             //console.log(container)
                             container.append(switcher);
