@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>URBA6402 Mini-Project by Kenny</title>
+        <!-- icon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- fontawesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+        <!-- core theme CSS and JS-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <script src="js/scripts.js"></script>
+        <!-- mapbox CSS and JS-->
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+        <!-- mapbox config -->
+        <script src="js/config.js"></script>
+        <!-- threebox CSS and JS-->
+        <!--link href="https://unpkg.com/threebox-plugin/dist/threebox.css" rel="stylesheet" /-->
+        <script src="https://unpkg.com/threebox-plugin/dist/threebox.min.js" type="text/javascript"></script>
+        <script src="js/obj3d.js"></script>
+        <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
+    </head>
+    
+    <body id="page-top">
+        <!-- navigation bar-->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand" href="#page-top"><img src="assets/img/navbar-logo.svg" alt="..." /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ms-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="#mapp">Map</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#services">Story</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#portfolio">Methodology</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#timeline">timeline</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                        <!--li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li-->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- masthead-->
+        <header class="masthead">
+            <div class="container">
+                <div class="masthead-subheading">Welcome to Kenny's Studio!</div>
+                <div class="masthead-heading text-uppercase">It's About Green Mapping Using Google Street View (GSV) and Convolutional Neural Network (CNN)</div>
+                <a class="btn btn-primary btn-xl text-uppercase" href="#mapp">Tell Me from Map</a>
+            </div>
+        </header>
+
+        <!-- map-->
+        <section class="page-section" id="mapp">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">Computer Vision for On-street Tree Mapping</h2>
+                    <h3 class="section-subheading text-muted">Using GSV images collected in Feb 2022 to map update on-street trees/plants along Tiu Keng Leng, Hong Kong</h3>
+                    <div id="map"><div id="menu"></div></div>
+
+                    <script>
+                        mapboxgl.accessToken = config.accessToken;
+                        
+                        // add a map
+                        var map = (window.map = new mapboxgl.Map({
+                            container: 'map', // container ID
+                            style: 'mapbox://styles/yknkenny/cl14u3pd1008714l9hgf8o1ym', // style URL
+                            center: [114.2509, 22.3054], // starting position [lng, lat]
+                            zoom: 16, // starting zoom
+                            hash: true,
+                            antialias: true,
+                        }));
+
+                        // add threebox webgl window
+                        window.tb = new Threebox(
+                            map,
+                            map.getCanvas().getContext('webgl'),
+                            {
+                                defaultLights: true,
+                                terrain: false,
+                                enableSelectingObjects: true,
+                                enableTooltips: true,
+                                multiLayer: true, // this will create a default custom layer that will manage a single tb.update
+                            }
+                        );
+
+                        
+                        // configure for 3d objects
+
+                        let items = obj3D.length;
+                        let minZoom = 14;
+                        let maxZoom = 22;
+                        let toggleableLayerIds = [];
+                       
+                        // add zoom and rotation controls to the map
+                        map.addControl(new mapboxgl.NavigationControl());
+                        
+                        // add a full screen for map display
+                        map.addControl(new mapboxgl.FullscreenControl());
+                        
+                        var currBounds = null;
+                        var beyondCount = beyondCount = 0;
+                        updateBounds = () => {
+                            const bounds = map.getBounds()
+
+                            var line = turf.lineString([
+                                [bounds.getNorthEast().lng, bounds.getNorthEast().lat], 
+                                [bounds.getSouthWest().lng, bounds.getSouthWest().lat]
+                            ]);
+                            var bbox = turf.bbox(line);
+                            window.currBounds = turf.bboxPolygon(bbox)
+                            beyondCount = 0
+                            withinCount = 0
+                            // update3d();
+                        }
+
+                        // add map.on(load)
+                        map.on('load', () => { 
+                            updateBounds();
+                            
+                            // Create a popup
+                            const popup = new mapboxgl.Popup({
+                                closeButton: false,
+                            });
+
+                            /*
+
+                            // source from tileset
+                            map.addSource('projectarea', {
+                                type: 'vector',
+                                url: 'mapbox://yknkenny.cl16d3fji4toe21prgnmtjl6d-0knig',
+                            });
+                            
+                            // data layer for tree
+                            map.addLayer({
+                                'id': 'treehk',
+                                'type': 'circle',
+                                'source': 'projectarea',
+                                'source-layer': 'Trees',
+                                'minzoom': 16,
+                                'layout': {
+                                    'visibility': 'visible',
+                                },
+                                'paint': {
+                                    'circle-radius': 5,
+                                    'circle-color': 'rgba(221,190,223,1)',
+                                    'circle-stroke-color': 'rgba(100,14,149,1)',
+                                    'circle-stroke-width': 1,
+                                },
+                            });
+
+                            */
+
+                            // source from tileset
+                            map.addSource('mapbox', {
+                                type: 'vector',
+                                url: 'mapbox://mapbox.mapbox-streets-v8',
+                            });
+
+                            // add extruded 3D buildings layer
+                            map.addLayer({
+                                'id': '3dbuildings',
+                                'source': 'mapbox',
+                                'source-layer': 'building',
+                                'filter': ['==', 'extrude', 'true'],
+                                'type': 'fill-extrusion',
+                                'minzoom': 15,
+                                'layout': {
+                                    'visibility': 'visible',
+                                },
+                                'paint': {
+                                    'fill-extrusion-height': ["get", "height"],
+                                    'fill-extrusion-base': 0,
+                                    'fill-extrusion-color': 'rgba(164,199,204,1)',
+                                    'fill-extrusion-vertical-gradient': true,
+                                    'fill-extrusion-opacity': 0.3,                    
+                                }
+                            });
+                            
+                            for (let j = 1; j <= items; j++) {
+                                let l = {
+                                    oid: obj3D[j-1][0],
+                                    layer: '3d' + obj3D[j-1][5] + obj3D[j-1][0],
+                                    origin: obj3D[j-1].slice(1,3),
+                                    height: obj3D[j-1][3],
+                                    rZ: obj3D[j-1][4],
+                                    featype: obj3D[5],
+                                    path: obj3D[j-1][6],
+                                }
+                                toggleableLayerIds.push(l); //append in array
+                            }
+                            //createButtons();  // ignore the createButtons function
+
+                            var modelDict = {
+                            tree2: {
+                                height: 8.7,
+                                model: null
+                            }, 
+                            tree3: {
+                                height: 9.0,
+                                model: null
+                            }, 
+                            fh: {
+                                height: 1.4,
+                                model: null
+                            }, 
+                            lp: {
+                                height: 6.0,
+                                model: null
+                            }
+                        };
+
+                        const promiseArr = [];
+                        Object.keys(modelDict).forEach((key)=>{
+                            promiseArr.push(
+                                new Promise((resolve)=>{
+                                let value = modelDict[key];
+                                tb.loadObj({
+                                    type: 'gltf', 
+                                    obj: `model/${key}.glb`, //model url
+                                    units: 'meters', //units in the default values are always in meters
+                                    scale: value.height, // set scale using height
+                                    rotation: { x: 90, y: 180, z: 0 }, //default rotation
+                                    anchor: 'center'
+                                }, function (model) {
+                                    modelDict[key].model = model
+                                    resolve();
+                                })
+                            }))
+                        })
+
+                        function update3d() {
+                            let i = 0;
+                            toggleableLayerIds.forEach((l) => { //call each element in array
+                                i++;
+                                map.addLayer(createCustomLayer(l.oid, l.layer, l.origin, l.height, l.rZ, l.featype, l.path), 'waterway-label');
+                                tb.setLayerZoomRange(l.layer, minZoom, maxZoom);
+                            });
+                        }
+
+                        Promise.all(promiseArr).then((err, value) => {
+                            console.log(modelDict);
+                            update3d();
+                        })
+
+
+                            function createCustomLayer(oid, layerId, origin, height, rZ, featype, path) {
+                                //create the layer
+                                let customLayer3D = {
+                                    id: layerId,
+                                    type: 'custom',
+                                    renderingMode: '3d',
+                                    onAdd: function (map, gl) {
+                                        addModel(oid, layerId, origin, height, rZ, featype, path);
+                                    },
+                                    render: function (gl, matrix) {
+                                        //tb.update(); is not needed anymore if multiLayer : true
+                                    }
+                                };
+                                return customLayer3D;
+                            };
+
+
+
+
+                            map.on("move", function () {
+                                updateBounds();
+                            });
+                            map.on("zoomend", function () {
+                                updateBounds();
+                            });
+
+                            function beyondScreen(origin) {
+                                var point = turf.point(origin);
+                                return turf.pointsWithinPolygon(point, currBounds).features.length < 1;
+                            }
+
+                            window.currModelDict = {}
+
+                            function addModel(oid, layerId, origin, height, rZ, featype, path) {
+                                if(beyondScreen(origin)){
+                                    beyondCount++;
+                                    return
+                                } 
+                                withinCount++
+
+                                // if(!currModelDict['m_' + oid]) return;
+
+                                let model = modelDict["tree2"].model.duplicate();
+                                if(path.includes("tree3"))
+                                    model = modelDict["tree3"].model.duplicate();
+                                else if(path.includes("lp"))
+                                    model = modelDict["lp"].model.duplicate();
+                                else if(path.includes("hy"))
+                                    model = modelDict["hy"].model.duplicate();
+                                model.setCoords(origin);
+                                model.addTooltip(
+                                    "Object: " + featype + "<br>" +
+                                    "Object ID: " + oid + "<br>" +
+                                    "Height: " + height + " meters" + "<br>" +
+                                    "Coordinate: " + origin[0] + ", " + origin[1], true);
+                                currModelDict['m_' + oid] = model;
+                                tb.add(model, layerId);
+                            };
+
+
+                            /*
+
+                            // mouseover to get feature attributes
+                            // (reference: https://docs.mapbox.com/mapbox-gl-js/example/query-similar-features/)
+                            map.on('mouseover', 'treehk', (e) => {
+                                map.getCanvas().style.cursor = 'pointer';
+                                popup
+                                .setLngLat(e.lngLat)
+                                .setHTML(
+                                    'Tree ID: ' + e.features[0].id + '<br>' + 
+                                    'Tree Height: ' + parseFloat(e.features[0].properties.tree_height).toFixed(1) + ' meters' + '<br>' +
+                                    'Coordinates: ' + parseFloat(e.features[0].geometry.coordinates[1]).toFixed(5) + ', ' + parseFloat(e.features[0].geometry.coordinates[0]).toFixed(5))
+                                    .addTo(map);
+                                });
+                        
+                            // mouseleave to resume normal
+                            map.on('mouseleave', 'treehk', () => {
+                                map.getCanvas().style.cursor = '';
+                                popup.remove();
+                                //overlay.style.display = 'none';  // error appears when active
+                            });
+                            */
+
+                        });
+
+
+
+
+                        // BELOW JS CODES/VARIABLES NEED TO BE REVIEWED
+                        /* map.on('idle', () => {
+                            // enumerate ids of the layers
+                            const toggleableLayerIds = ['treehk', '3dbuildings'];
+                            const togglename = ['Tree', '3D Building'];
+
+                            // set up the corresponding toggle button for each layer
+                            //for (const id of toggleableLayerIds) {
+
+                            for (let l = 0; l < toggleableLayerIds.length; l++) {
+
+                                // skip layers that already have a button set up
+                                if (document.getElementById(toggleableLayerIds[l])) {
+                                    continue;
+                                }
+
+                                // create a link
+                                const link = document.createElement('a');
+                                link.id = toggleableLayerIds[l];
+                                link.href = '#';
+                                link.textContent = togglename[l];
+                                link.className = 'active';
+
+                                // show or hide layer when the toggle is clicked
+                                link.onclick = function (e) {
+                                    const clickedLayer = this.id;
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    const visibility = map.getLayoutProperty(
+                                        clickedLayer,
+                                        'visibility'
+                                    );
+                                    
+                                    // toggle layer visibility by changing the layout object's visibility property
+                                    if (visibility === 'visible') {
+                                        map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                                        this.className = '';
+                                    } else {
+                                        this.className = 'active';
+                                        map.setLayoutProperty(
+                                            clickedLayer,
+                                            'visibility',
+                                            'visible'
+                                        );
+                                    }
+                                };
+
+                                const layers = document.getElementById('menu');
+                                layers.appendChild(link);
+                            }
+                        });*/
+                    </script>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        
+        <!-- Services-->
+        <section class="page-section bg-light" id="services">
+            <div class="container">
+                <div class="row text-center">
+                    <h2 class="section-heading text-uppercase">Advantages of Computer Vision for Mapping</h2>
+                    <h3 class="section-subheading text-muted">Not every mapping features are mapped and opened up by the government. Trees and plants in Hong Kong are the example. Mapping from computer vision provides an alternative way of data acquisition to understand our Earth.</h3>                
+                    <div class="col-md-4">
+                        <span class="fa-stack fa-4x">
+                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                            <i class="fas fa-street-view fa-stack-1x fa-inverse fa-flip" style="--fa-animation-duration: 3s;"></i>
+                        </span>
+                        <h4 class="my-3">Free and Convenient</h4>
+                        <p class="text-muted">GSV services are free of use in Google Map. Google updated panoramas every 1 to 2 years. The panoramas in Tiu Keng Leng (調景嶺) captured in Feb 2022 were released on Google Map in early Mar 2022.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="fa-stack fa-4x">
+                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                            <i class="fas fa-chart-simple fa-stack-1x fa-inverse fa-beat-fade" style="--fa-animation-duration: 3s;--fa-beat-scale: 1.18;"></i>
+                        </span>
+                        <h4 class="my-3">Abundant GSV Data for Analytics</h4>
+                        <p class="text-muted">Every GSV view covers a 360-panoramic image and the geographic positions of captured features stored in respective 'depth map' and attibutes.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="fa-stack fa-4x">
+                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                            <i class="fas fa-robot fa-stack-1x fa-inverse fa-beat" style="--fa-animation-duration: 3s;--fa-beat-scale: 1.1;"></i>
+                            
+                        </span>
+                        <h4 class="my-3">Mature and Low-cost AI Technologies</h4>
+                        <p class="text-muted">Deep learning technologies for computer vision, especially for recognition of trees and plants are mature. The computational costs are relatively low.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Methodology Grid-->
+        <section class="page-section" id="portfolio">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">Methodology</h2>
+                    <h3 class="section-subheading text-muted">Technologies used to collect the tree information from GSV panoramas are provided here.</h3>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        
+                        <!-- Methodology item 1-->
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal1">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-fluid" src="assets/img/portfolio/1.jpg" alt="..." />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">Acquire</div>
+                                <div class="portfolio-caption-subheading text-muted">Get GSV panoramas tile dataset</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        
+                        <!-- Methodology item 2-->
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal2">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-fluid" src="assets/img/portfolio/2.jpg" alt="..." />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">Explore</div>
+                                <div class="portfolio-caption-subheading text-muted">Explore GSV sensor and depth information</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        
+                        <!-- Methodology item 3-->
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal3">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-fluid" src="assets/img/portfolio/3.jpg" alt="..." />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">Stitch</div>
+                                <div class="portfolio-caption-subheading text-muted">Make up stitched 360-panoramic image</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
+                        
+                        <!-- Methodology item 4-->
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal4">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-fluid" src="assets/img/portfolio/4.jpg" alt="..." />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">Transform</div>
+                                <div class="portfolio-caption-subheading text-muted">Trasform local sensor and depth information to true coordinates</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
+                        <!-- Methodology item 5-->
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal5">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-fluid" src="assets/img/portfolio/5.jpg" alt="..." />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">Train</div>
+                                <div class="portfolio-caption-subheading text-muted">Train local tree specieis on top of pretrained model</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <!-- Methodology item 6-->
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal6">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-fluid" src="assets/img/portfolio/6.jpg" alt="..." />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">Recognite</div>
+                                <div class="portfolio-caption-subheading text-muted">Extract on-street trees from GSV panoramas</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Timeline Development-->
+        <section class="page-section bg-light" id="timeline">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">Timeline</h2>
+                    <h3 class="section-subheading text-muted">The development timeline for this mini-project provides here.</h3>
+                </div>
+                <ul class="timeline">
+                    <li>
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/1.jpg" alt="..." /></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>2013-2014</h4>
+                                <h4 class="subheading">Humble Beginnings</h4>
+                            </div>
+                            <div class="timeline-body"><p class="text-muted">A headache comes in disseminating a series of site inspection 360-panoramic imageries for internal use. A web prototype was developed to browse the information using Krpano.</p></div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/2.jpg" alt="..." /></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>2014-2015</h4>
+                                <h4 class="subheading">An Agency is Born</h4>
+                            </div>
+                            <div class="timeline-body"><p class="text-muted">More understanding on the architecture of storage and dissemination of geographic information of Google Street View </p></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/3.jpg" alt="..." /></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>December 2015</h4>
+                                <h4 class="subheading">Transition to Full Service</h4>
+                            </div>
+                            <div class="timeline-body"><p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/hku.jpg" alt="..." /></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>September 2020</h4>
+                                <h4 class="subheading">Knowledge Expansion</h4>
+                            </div>
+                            <div class="timeline-body"><p class="text-muted">Given an opportunity to admit to the Master Degree in Urban Analytics to acquire the state-of-the-art data acquisition and analytics technologies./p></div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-image">
+                            <h4>
+                                Be Part
+                                <br />
+                                Of My
+                                <br />
+                                Story!
+                            </h4>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+       
+        <!-- About Me-->
+        <section class="page-section" id="about">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">About Me</h2>
+                    <h3 class="section-subheading text-muted"> </h3>
+                </div>
+                    <div class="col-lg-5">
+                        <div class="team-member">
+                            <img class="mx-auto rounded-circle" src="assets/img/team/Kenny.jpg" alt="..." />
+                            <h4>Kenny Yiu</h4>
+                            <p class="text-muted">HKU Student; Senior Land Surveyor of LandsD</p>
+                            <a class="btn btn-dark btn-social mx-2" href="tel:+85237499696" aria-label="Kenny Yiu Work Phone"><i class="fas fa-phone"></i></a>
+                            <a class="btn btn-dark btn-social mx-2" href="mailto:slssdms@landsd.gov.hk" aria-label="Kenny Yiu Email Address"><i class="fas fa-at"></i></a>
+                            <a class="btn btn-dark btn-social mx-2" href="https://github.com/yknkenny" aria-label="Kenny Yiu GitHub"><i class="fab fa-github-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8 mx-auto text-center"><p class="large text-muted">A part-time Master's Student of <!--a href="https://www.arch.hku.hk/programmes/upad/master-of-science-in-urban-analytics"-->Urban Analytics</a> 
+                        from the University of Hong Kong (HKU) interested in different methodologies in data acquisition and analytics, and a Senior Land Surveyor of the <!--a href="https://www.landsd.gov.hk/"-->Lands Department (LandsD)</a> 
+                        for different Geographic Information System (GIS) projects and participate in formulation of spatial data standards to support the overall development of 
+                        <!--a href="https://www.csdi.gov.hk"-->Common Spatial Data Infrastructure (CSDI)</a> in Hong Kong.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Clients-->
+        <div class="py-5 bg-light">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-3 col-sm-6 my-3">
+                        <a href="https://github.com"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/github.svg" alt="..." aria-label="GitHub Logo" /></a>
+                    </div>
+                    <div class="col-md-3 col-sm-6 my-3">
+                        <a href="https://maps.google.com"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/google.svg" alt="..." aria-label="Google Logo" /></a>
+                    </div>
+                    <div class="col-md-3 col-sm-6 my-3">
+                        <a href="https://www.mapbox.com"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/mapbox.svg" alt="..." aria-label="Mapbox Logo" /></a>
+                    </div>
+                    <div class="col-md-3 col-sm-6 my-3">
+                        <a href="https://threejs.org/"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/3js.svg" alt="..." aria-label="Three.js Logo" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Contact-->
+        <!--
+        <section class="page-section" id="contact">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">Contact Us</h2>
+                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                </div>
+        -->
+                <!-- * * * * * * * * * * * * * * *-->
+                <!-- * * SB Forms Contact Form * *-->
+                <!-- * * * * * * * * * * * * * * *-->
+                <!-- This form is pre-integrated with SB Forms.-->
+                <!-- To make this form functional, sign up at-->
+                <!-- https://startbootstrap.com/solution/contact-forms-->
+                <!-- to get an API token!-->
+        <!--
+                <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                    <div class="row align-items-stretch mb-5">
+                        <div class="col-md-6">
+                            <div class="form-group">
+        -->
+                                <!-- Name input-->
+        <!--
+                                <input class="form-control" id="name" type="text" placeholder="Your Name *" data-sb-validations="required" />
+                                <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                            </div>
+                            <div class="form-group">
+        -->
+                                <!-- Email address input-->
+        <!--
+                                <input class="form-control" id="email" type="email" placeholder="Your Email *" data-sb-validations="required,email" />
+                                <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
+                                <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
+                            </div>
+                            <div class="form-group mb-md-0">
+        -->
+                                <!-- Phone number input-->
+        <!--
+                                <input class="form-control" id="phone" type="tel" placeholder="Your Phone *" data-sb-validations="required" />
+                                <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-group-textarea mb-md-0">
+        -->
+                                <!-- Message input-->
+        <!--
+                                <textarea class="form-control" id="message" placeholder="Your Message *" data-sb-validations="required"></textarea>
+                                <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                            </div>
+                        </div>
+                    </div>
+        -->
+                    <!-- Submit success message-->
+                    <!---->
+                    <!-- This is what your users will see when the form-->
+                    <!-- has successfully submitted-->
+        <!--
+                    <div class="d-none" id="submitSuccessMessage">
+                        <div class="text-center text-white mb-3">
+                            <div class="fw-bolder">Form submission successful!</div>
+                            To activate this form, sign up at
+                            <br />
+                            <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                        </div>
+                    </div>
+        -->
+                    <!-- Submit error message-->
+                    <!---->
+                    <!-- This is what your users will see when there is-->
+                    <!-- an error submitting the form-->
+        <!--
+                    <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+        -->
+                    <!-- Submit Button-->
+        <!--
+                    <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase disabled" id="submitButton" type="submit">Send Message</button></div>
+                </form>
+            </div>
+        </section>
+        -->
+        <!-- Footer-->
+        <footer class="footer py-4">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 text-lg-start">Copyright &copy; Kenny 2022</div>
+                    <div class="col-lg-4 my-3 my-lg-0">
+                        <!--a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a-->
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
+                        <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Portfolio Modals-->
+        <!-- Portfolio item 1 modal popup-->
+        <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project details-->
+                                    <h2 class="text-uppercase">Project Name</h2>
+                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/1.jpg" alt="..." />
+                                    <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                    <ul class="list-inline">
+                                        <li>
+                                            <strong>Client:</strong>
+                                            Threads
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                            Illustration
+                                        </li>
+                                    </ul>
+                                    <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                        <i class="fas fa-xmark me-1"></i>
+                                        Close Project
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Portfolio item 2 modal popup-->
+        <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project details-->
+                                    <h2 class="text-uppercase">Project Name</h2>
+                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/2.jpg" alt="..." />
+                                    <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                    <ul class="list-inline">
+                                        <li>
+                                            <strong>Client:</strong>
+                                            Explore
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                            Graphic Design
+                                        </li>
+                                    </ul>
+                                    <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                        <i class="fas fa-xmark me-1"></i>
+                                        Close Project
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Portfolio item 3 modal popup-->
+        <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project details-->
+                                    <h2 class="text-uppercase">Project Name</h2>
+                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/3.jpg" alt="..." />
+                                    <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                    <ul class="list-inline">
+                                        <li>
+                                            <strong>Client:</strong>
+                                            Finish
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                            Identity
+                                        </li>
+                                    </ul>
+                                    <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                        <i class="fas fa-xmark me-1"></i>
+                                        Close Project
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Portfolio item 4 modal popup-->
+        <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project details-->
+                                    <h2 class="text-uppercase">Project Name</h2>
+                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/4.jpg" alt="..." />
+                                    <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                    <ul class="list-inline">
+                                        <li>
+                                            <strong>Client:</strong>
+                                            Lines
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                            Branding
+                                        </li>
+                                    </ul>
+                                    <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                        <i class="fas fa-xmark me-1"></i>
+                                        Close Project
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Portfolio item 5 modal popup-->
+        <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project details-->
+                                    <h2 class="text-uppercase">Project Name</h2>
+                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/5.jpg" alt="..." />
+                                    <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                    <ul class="list-inline">
+                                        <li>
+                                            <strong>Client:</strong>
+                                            Southwest
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                            Website Design
+                                        </li>
+                                    </ul>
+                                    <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                        <i class="fas fa-xmark me-1"></i>
+                                        Close Project
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Portfolio item 6 modal popup-->
+        <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project details-->
+                                    <h2 class="text-uppercase">Project Name</h2>
+                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/6.jpg" alt="..." />
+                                    <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                    <ul class="list-inline">
+                                        <li>
+                                            <strong>Client:</strong>
+                                            Window
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                            Photography
+                                        </li>
+                                    </ul>
+                                    <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                        <i class="fas fa-xmark me-1"></i>
+                                        Close Project
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <!-- * *                               SB Forms JS                               * *-->
+        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <!--script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script-->
+    </body>
+</html>
