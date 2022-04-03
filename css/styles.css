@@ -11804,7 +11804,7 @@ section#contact form#contactForm :-ms-input-placeholder {
   font: 18px/24px 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
 
-#menu, #switcher {
+#menu, #switcher, #mapfly {
   background: #D7E5E6;
   position: relative;
   z-index: 1;
@@ -11820,10 +11820,9 @@ section#contact form#contactForm :-ms-input-placeholder {
   text-align: left;
 }
 
-#switcher button {
+#switcher button, #mapfly button {
   width: 110px;
   font-size: 16px;
-  background-color: #DF8F8F;
   display: block;
   margin: 0;
   padding: 10px;
@@ -11833,6 +11832,14 @@ section#contact form#contactForm :-ms-input-placeholder {
   font-family: Roboto;
   text-align: left;
   color: #FFFFFF;
+}
+
+#switcher button {
+background-color: #DF8F8F;
+}
+
+#mapfly button {
+  background-color: #A783E6;
 }
 
 #menu a {

@@ -20,6 +20,7 @@
         <script src="js/scripts.js"></script>
         <script src="js/config.js"></script>
         <script src="js/obj3d.js"></script>
+        <script src="js/flyarray.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
         <!-- mapbox CSS and JS-->
@@ -72,9 +73,10 @@
                     <div id="map"></div>                    
                     <div id="menu" class="mapboxgl-ctrl"></div>
                     <div id="switcher" class="mapboxgl-ctrl">
-                        <button type="button", aria-label="Enter fullscreen">
-                            Ortho
-                        </button>
+                        <button type="button">Satellite</button>
+                    </div>
+                    <div id="mapfly" class="mapboxgl-ctrl">
+                        <button type="button">Fly to Next</button>
                     </div>
 
                     <script>
@@ -174,21 +176,43 @@
                             createButtons()
                             
 
-                            // switcher
+                            // "SWITCHER" button
                             let index = 0;
                             const switcher = document.querySelector("#switcher");
-                            switcher.addEventListener("click", ()=>{
+                            switcher.addEventListener("click", ()=> {
                                 map.setStyle(mapStyleArr[++index % mapStyleArr.length].url);
                                 const button = switcher.querySelector("button");
                                 button.textContent = mapStyleArr[(index + 1) % mapStyleArr.length].name;
                             })
 
-                            // load switcher on map div
+                            // load "SWITCHER" on map div
                             const container = document.querySelector(".mapboxgl-ctrl-top-left");
                             //console.log(container)
                             container.append(switcher);
 
 
+                            // "MAPFLY" button
+                            let flyindex = 0; // copy initial status in the 1st row 
+                            const mapfly = document.querySelector("#mapfly");
+                            mapfly.addEventListener('click', ()=> {
+                                ++flyindex;
+                                map.flyTo({
+                                    center: flyarray[flyindex % flyarray.length].slice(1,3),
+                                    zoom: flyarray[flyindex % flyarray.length][3],
+                                    bearing: flyarray[flyindex % flyarray.length][4],
+                                    pitch: flyarray[flyindex % flyarray.length][5],
+                                    speed: flyarray[flyindex % flyarray.length][6],
+                                    minZoom: flyarray[flyindex % flyarray.length][7],
+                                    essential: true,
+                                });
+                            });    
+                            
+                            // load "SWITCHER" on map div
+                            //const container = document.querySelector(".mapboxgl-ctrl-top-left");
+                            container.append(mapfly);
+
+
+                            // -> change to j = 0; j++ for the loop
                             for (let j = 1; j <= items; j++) {
                                 let l = {
                                     oid: obj3D[j-1][0],
