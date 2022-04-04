@@ -49,7 +49,6 @@
                         <li class="nav-item"><a class="nav-link" href="#portfolio">Methodology</a></li>
                         <li class="nav-item"><a class="nav-link" href="#timeline">timeline</a></li>
                         <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                        <!--li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li-->
                     </ul>
                 </div>
             </div>
@@ -59,7 +58,7 @@
         <header class="masthead">
             <div class="container">
                 <div class="masthead-subheading">Welcome to Kenny's Studio!</div>
-                <div class="masthead-heading text-uppercase">It's about Green and Road-side Mapping Using Google Street View (GSV) and R-CNN</div>
+                <div class="masthead-heading text-uppercase">It's about Green and Road-side Mapping Using Google Street View and R-CNN</div>
                 <a class="btn btn-primary btn-xl text-uppercase" href="#mapp">Tell Me from Map</a>
             </div>
         </header>
@@ -69,8 +68,8 @@
             <div class="container">
                 <div class="text-center">
                     <h2 class="section-heading text-uppercase">Computer Vision for On-street Mapping</h2>
-                    <h3 class="section-subheading text-muted">Using GSV images collected in Sep 2016 and Feb 2021 to update on-street trees, plants and street furniture in West Kowloon Cultural District (WKCD), Hong Kong</h3>
-                    <div id="map"></div>                    
+                    <h3 class="section-subheading text-muted">Using Google Street View (GSV) images to update on-street trees, plants and street furniture in the West Kowloon Cultural District (WKCD), Hong Kong</h3>
+                    <div id="map"></div>
                     <div id="menu" class="mapboxgl-ctrl"></div>
                     <div id="switcher" class="mapboxgl-ctrl">
                         <button type="button">Satellite</button>
@@ -311,17 +310,17 @@
             <div class="container">
                 <div class="row text-center">
                     <h2 class="section-heading text-uppercase">Advantages of Computer Vision for Mapping</h2>
-                    <h3 class="section-subheading text-muted">Not every road-side features were surveyed, mapped and opened up by the government. Trees, plants and some types of street furniture (e.g. lightboxes) in Hong Kong are the example. Computer vision provides an alternative way of data acquisition to understand the morphology of our city.</h3>                
+                    <h3 class="section-subheading text-muted extra-margin-4">Not every road-side features were surveyed, mapped and opened up by the government. Trees, plants and some types of street furniture (e.g. lightboxes) in Hong Kong are the example. Computer vision provides an alternative way of data acquisition to understand the morphology of our city.</h3>                
                     <div class="col-md-4">
-                        <span class="fa-stack fa-4x">
+                        <span class="fa-stack fa-4x extra-margin-2">
                             <i class="fas fa-circle fa-stack-2x text-primary"></i>
                             <i class="fas fa-street-view fa-stack-1x fa-inverse fa-flip" style="--fa-animation-duration: 3s;"></i>
                         </span>
                         <h4 class="my-3">Free and Convenient</h4>
-                        <p class="text-muted">GSV services are free of use in Google Map. Google updated panoramas every 1 to 2 years. The panoramas in Tiu Keng Leng (調景嶺) captured in Feb 2022 were released on Google Map in early Mar 2022.</p>
+                        <p class="text-muted">GSV services are free of use in Google Map. Google updated panoramas along major trunk roads every 1 to 2 years. The panoramas in Tiu Keng Leng (調景嶺) captured in Feb 2022 were released on Google Map in early Mar 2022.</p>
                     </div>
                     <div class="col-md-4">
-                        <span class="fa-stack fa-4x">
+                        <span class="fa-stack fa-4x extra-margin-2">
                             <i class="fas fa-circle fa-stack-2x text-primary"></i>
                             <i class="fas fa-chart-simple fa-stack-1x fa-inverse fa-beat-fade" style="--fa-animation-duration: 3s;--fa-beat-scale: 1.18;"></i>
                         </span>
@@ -329,10 +328,9 @@
                         <p class="text-muted">Every GSV view covers a 360-panoramic image and the geographic positions of captured features stored in respective 'depth map' and attibutes.</p>
                     </div>
                     <div class="col-md-4">
-                        <span class="fa-stack fa-4x">
+                        <span class="fa-stack fa-4x extra-margin-2">
                             <i class="fas fa-circle fa-stack-2x text-primary"></i>
                             <i class="fas fa-robot fa-stack-1x fa-inverse fa-beat" style="--fa-animation-duration: 3s;--fa-beat-scale: 1.1;"></i>
-                            
                         </span>
                         <h4 class="my-3">Mature and Low-cost AI Technologies</h4>
                         <p class="text-muted">Deep learning technologies for computer vision, especially for recognition of trees and plants are mature. The computational costs are relatively low.</p>
@@ -345,7 +343,7 @@
         <section class="page-section" id="portfolio">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Methodology</h2>
+                    <h2 class="section-heading text-uppercase">'3A3T' Methodology</h2>
                     <h3 class="section-subheading text-muted">Technologies used to collect the on-street geographic information from GSV panoramas are provided here.</h3>
                 </div>
                 <div class="row">
@@ -360,7 +358,7 @@
                                 <img class="img-fluid" src="assets/img/portfolio/1.jpg" alt="...Acquire" />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Acquire</div>
+                                <div class="portfolio-caption-heading">Acquisition</div>
                                 <div class="portfolio-caption-subheading text-muted">Get GSV panoramas tile dataset</div>
                             </div>
                         </div>
@@ -376,8 +374,8 @@
                                 <img class="img-fluid" src="assets/img/portfolio/2.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Explore</div>
-                                <div class="portfolio-caption-subheading text-muted">Explore GSV sensor and depth information</div>
+                                <div class="portfolio-caption-heading">Advance</div>
+                                <div class="portfolio-caption-subheading text-muted">Dig out sensor and depth information</div>
                             </div>
                         </div>
                     </div>
@@ -392,8 +390,8 @@
                                 <img class="img-fluid" src="assets/img/portfolio/3.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Stitch</div>
-                                <div class="portfolio-caption-subheading text-muted">Make up stitched 360-panoramic image</div>
+                                <div class="portfolio-caption-heading">Assemble</div>
+                                <div class="portfolio-caption-subheading text-muted">Stitch up all tiles to from 360-images</div>
                             </div>
                         </div>
                     </div>
@@ -409,7 +407,7 @@
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Transform</div>
-                                <div class="portfolio-caption-subheading text-muted">Trasform local sensor and depth information to true coordinates</div>
+                                <div class="portfolio-caption-subheading text-muted">Bring forward arbitrary 2D coordinates to 3D coordinates</div>
                             </div>
                         </div>
                     </div>
@@ -425,7 +423,7 @@
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Train</div>
-                                <div class="portfolio-caption-subheading text-muted">Train local tree specieis on top of pretrained model</div>
+                                <div class="portfolio-caption-subheading text-muted">Transfer and optimize pre-trained model with local contexts</div>
                             </div>
                         </div>
                     </div>
@@ -440,8 +438,8 @@
                                 <img class="img-fluid" src="assets/img/portfolio/6.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Recognite</div>
-                                <div class="portfolio-caption-subheading text-muted">Extract on-street trees from GSV panoramas</div>
+                                <div class="portfolio-caption-heading">Transit</div>
+                                <div class="portfolio-caption-subheading text-muted">Make use of trained model for feature recognition</div>
                             </div>
                         </div>
                     </div>
@@ -588,7 +586,7 @@
                                     <h2 class="text-uppercase">Data Acquisition</h2>
                                     <p class="item-intro text-muted">Batch collection of GSV panoramas</p>
                                     <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/1a.jpg" alt="...batch download" />
-                                    <p>Grab all GSV tiles along trunk roads and footpaths of the whole WKCD areas using the Python programming scripts. Google Map API will direct every trial to the nearest available GSV capture point for download. </p>
+                                    <p>Grab all GSV tiles along trunk roads and footpaths of the WKCD areas using the Python scripts. Google Map API will direct every trial to the nearest available GSV capture point for download. </p>
                                     <ul class="list-inline">
                                         <li class="text-start">
                                             <strong>Characteristics of Each GSV Scene:</strong>
@@ -625,8 +623,8 @@
                             <div class="col-lg-8">
                                 <div class="modal-body">
                                     <!-- Project details-->
-                                    <h2 class="text-uppercase">Data Exploration</h2>
-                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                    <h2 class="text-uppercase">Data Exploitation</h2>
+                                    <p class="item-intro text-muted">Ex</p>
                                     <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/2.jpg" alt="..." />
                                     <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                                     <ul class="list-inline">
