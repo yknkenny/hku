@@ -58,7 +58,7 @@
         <header class="masthead">
             <div class="container">
                 <div class="masthead-subheading">Welcome to Kenny's Studio!</div>
-                <div class="masthead-heading text-uppercase">It's about Green and Road-side Mapping Using Google Street View and R-CNN</div>
+                <div class="masthead-heading text-uppercase">It's about Road-side Green and Feature Mapping Using Google Street View (GSV) and ResNet-50 Convolutional Neural Network (CNN)</div>
                 <a class="btn btn-primary btn-xl text-uppercase" href="#mapp">Tell Me from Map</a>
             </div>
         </header>
@@ -68,7 +68,7 @@
             <div class="container">
                 <div class="text-center">
                     <h2 class="section-heading text-uppercase">Computer Vision for On-street Mapping</h2>
-                    <h3 class="section-subheading text-muted">Using Google Street View (GSV) images to update on-street trees, plants and street furniture in the West Kowloon Cultural District (WKCD), Hong Kong</h3>
+                    <h3 class="section-subheading text-muted"><span class="text-uppercase highlight-yellow">Data visualization:</span>  Using captured trees, plants and road-side features of the West Kowloon Cultural District (WKCD) from GSV and different urban design parameters for simulation and reshaping its uses.</h3>
                     <div id="map"></div>
                     <div id="menu" class="mapboxgl-ctrl"></div>
                     <div id="switcher" class="mapboxgl-ctrl">
@@ -310,30 +310,30 @@
             <div class="container">
                 <div class="row text-center">
                     <h2 class="section-heading text-uppercase">Advantages of Computer Vision for Mapping</h2>
-                    <h3 class="section-subheading text-muted extra-margin-4">Not every road-side features were surveyed, mapped and opened up by the government. Trees, plants and some types of street furniture (e.g. lightboxes) in Hong Kong are the example. Computer vision provides an alternative way of data acquisition to understand the morphology of our city.</h3>                
+                    <h3 class="section-subheading text-muted margin-large-3">Not all road-side features were mapped and opened up (e.g. iB1000 basemap by Lands Department (LandsD). Trees, plants and some less-important street furniture (e.g. sitting benches, tables and lightboxes, etc.) are excluded from iB1000 dataset, but they are essential for understanding the morphology of our city. Computer vision provides an alternative way of acquisition.</h3>
                     <div class="col-md-4">
-                        <span class="fa-stack fa-4x extra-margin-2">
+                        <span class="fa-stack fa-4x margin-large-2">
                             <i class="fas fa-circle fa-stack-2x text-primary"></i>
                             <i class="fas fa-street-view fa-stack-1x fa-inverse fa-flip" style="--fa-animation-duration: 3s;"></i>
                         </span>
                         <h4 class="my-3">Free and Convenient</h4>
-                        <p class="text-muted">GSV services are free of use in Google Map. Google updated panoramas along major trunk roads every 1 to 2 years. The panoramas in Tiu Keng Leng (調景嶺) captured in Feb 2022 were released on Google Map in early Mar 2022.</p>
+                        <p class="text-muted">GSV services are free for use in Google Map. In general, Google tries to take new street-view photos along major trunk roads of major cities once every year. 360-pano images can be downloaded using online tools or programming scripts. Data captured in Feb 2022 in Tiu Keng Leng (調景嶺) have been released.</p>
                     </div>
                     <div class="col-md-4">
-                        <span class="fa-stack fa-4x extra-margin-2">
+                        <span class="fa-stack fa-4x margin-large-2">
                             <i class="fas fa-circle fa-stack-2x text-primary"></i>
                             <i class="fas fa-chart-simple fa-stack-1x fa-inverse fa-beat-fade" style="--fa-animation-duration: 3s;--fa-beat-scale: 1.18;"></i>
                         </span>
-                        <h4 class="my-3">Abundant GSV Data for Analytics</h4>
-                        <p class="text-muted">Every GSV view covers a 360-panoramic image and the geographic positions of captured features stored in respective 'depth map' and attibutes.</p>
+                        <h4 class="my-3">Abundant GSV Data</h4>
+                        <p class="text-muted">Every 360-pano view covers a series of data and attributes, including 338 pano-tile images, alignment parameters fo cameras and sensors, and physical characteristics of most road-side features. Both geographic locations and dimensions can be estimated through a series of computation processes.</p>
                     </div>
                     <div class="col-md-4">
-                        <span class="fa-stack fa-4x extra-margin-2">
+                        <span class="fa-stack fa-4x margin-large-2">
                             <i class="fas fa-circle fa-stack-2x text-primary"></i>
                             <i class="fas fa-robot fa-stack-1x fa-inverse fa-beat" style="--fa-animation-duration: 3s;--fa-beat-scale: 1.1;"></i>
                         </span>
-                        <h4 class="my-3">Mature and Low-cost AI Technologies</h4>
-                        <p class="text-muted">Deep learning technologies for computer vision, especially for recognition of trees and plants are mature. The computational costs are relatively low.</p>
+                        <h4 class="my-3">Mature AI Technologies</h4>
+                        <p class="text-muted">Deep learning technologies for computer vision are mature. Open pretrained models (e.g. Common Objects In Context (COCO) dataset riding on ResNet-50 CNN) can be transferred and modified for segmentation and recognition of objects in local context. Computational costs on data training is relatively low.</p>
                     </div>
                 </div>
             </div>
@@ -343,8 +343,8 @@
         <section class="page-section" id="portfolio">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="section-heading text-uppercase">'3A3T' Methodology</h2>
-                    <h3 class="section-subheading text-muted">Technologies used to collect the on-street geographic information from GSV panoramas are provided here.</h3>
+                    <h2 class="section-heading text-uppercase">'3A-3T' Methodology</h2>
+                    <h3 class="section-subheading text-muted">Technologies used for <span class="text-uppercase highlight-yellow">data acquisition</span> and <span class="text-uppercase highlight-yellow">data analytics</span> from GSV pano.</h3>
                 </div>
                 <div class="row">
                     <div class="col-lg-4 col-sm-6 mb-4">
@@ -355,10 +355,10 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/portfolio/1.jpg" alt="...Acquire" />
+                                <img class="img-fluid" src="assets/img/m1.jpg" alt="...Acquire" />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Acquisition</div>
+                                <div class="portfolio-caption-heading">Acquire</div>
                                 <div class="portfolio-caption-subheading text-muted">Get GSV panoramas tile dataset</div>
                             </div>
                         </div>
@@ -371,7 +371,7 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/portfolio/2.jpg" alt="..." />
+                                <img class="img-fluid" src="assets/img/m2.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Advance</div>
@@ -387,7 +387,7 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/portfolio/3.jpg" alt="..." />
+                                <img class="img-fluid" src="assets/img/m3.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Assemble</div>
@@ -403,11 +403,11 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/portfolio/4.jpg" alt="..." />
+                                <img class="img-fluid" src="assets/img/m4.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Transform</div>
-                                <div class="portfolio-caption-subheading text-muted">Bring forward arbitrary 2D coordinates to 3D coordinates</div>
+                                <div class="portfolio-caption-subheading text-muted">Bring forward local 2D GSV coordinates to a real 3D world</div>
                             </div>
                         </div>
                     </div>
@@ -419,7 +419,7 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/portfolio/5.jpg" alt="..." />
+                                <img class="img-fluid" src="assets/img/m5.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Train</div>
@@ -435,7 +435,7 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/portfolio/6.jpg" alt="..." />
+                                <img class="img-fluid" src="assets/img/m6.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Transit</div>
@@ -452,47 +452,77 @@
             <div class="container">
                 <div class="text-center">
                     <h2 class="section-heading text-uppercase">Timeline</h2>
-                    <h3 class="section-subheading text-muted">The development timeline for this mini-project provides here.</h3>
+                    <h3 class="section-subheading text-muted margin-large-3">Development timeline for on-street object segmentation, recognition and mapping using GSV and ResNet-50 CNN provides here.</h3>
                 </div>
                 <ul class="timeline">
                     <li>
-                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/1.jpg" alt="..." /></div>
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/t1.jpg" alt="..." /></div>
                         <div class="timeline-panel">
                             <div class="timeline-heading">
                                 <h4>2013-2014</h4>
                                 <h4 class="subheading">Humble Beginnings</h4>
                             </div>
-                            <div class="timeline-body"><p class="text-muted">A headache comes in disseminating a series of site inspection 360-panoramic imageries for internal use. A web prototype was developed to browse the information using Krpano.</p></div>
+                            <div class="timeline-body"><p class="text-muted">A problem came to my development team in disseminating a series of site inspection 360-pano images for internal use. A web-based GIS prototype was hence developed to browse 360-pano images using <!--a href="https://krpano.com/"-->Krpano</a>.</p></div>
                         </div>
                     </li>
                     <li class="timeline-inverted">
-                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/2.jpg" alt="..." /></div>
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/t2.jpg" alt="..." /></div>
                         <div class="timeline-panel">
                             <div class="timeline-heading">
                                 <h4>2014-2015</h4>
-                                <h4 class="subheading">An Agency is Born</h4>
+                                <h4 class="subheading">Research and Development</h4>
                             </div>
-                            <div class="timeline-body"><p class="text-muted">More understanding on the architecture of storage and dissemination of geographic information of Google Street View </p></div>
+                            <div class="timeline-body"><p class="text-muted">Attempted to understand through deductive reasoning how Google processed, stored and disseminated camera, sensor and geographic information of each spherical view through the Internet effectively.</p></div>
                         </div>
                     </li>
                     <li>
-                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/3.jpg" alt="..." /></div>
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/t3.jpg" alt="..." /></div>
                         <div class="timeline-panel">
                             <div class="timeline-heading">
-                                <h4>December 2015</h4>
-                                <h4 class="subheading">Transition to Full Service</h4>
+                                <h4>February 2015</h4>
+                                <h4 class="subheading">Augmented Reality (AR)</h4>
                             </div>
-                            <div class="timeline-body"><p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
+                            <div class="timeline-body"><p class="text-muted">Invited to participate in a collaborative project between Energizing Kowloon East Office (EKEO) and LandsD to explore use of emerging technologies (e.g. AR and indoor positioning, etc.) to improve walkability, enhance environment and connect to the community of Kowloon East.</p></div>
                         </div>
                     </li>
                     <li class="timeline-inverted">
-                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/hku.jpg" alt="..." /></div>
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/t4.jpg" alt="..." /></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>2015-2016</h4>
+                                <h4 class="subheading">Project Tango Prototype</h4>
+                            </div>
+                            <div class="timeline-body"><p class="text-muted">Being selected to be the first batch of developers to participat in the Google Project Tango, and explored the feasibility of adopting the Simultaneous Localization and Mapping (SLAM) technology for indoor and outdoor spatial data acquisition through the Project Tango tablet prototype.</p></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/t5.jpg" alt="..." /></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>2016-2018</h4>
+                                <h4 class="subheading">Extended Applications</h4>
+                            </div>
+                            <div class="timeline-body"><p class="text-muted">My team continued development works for various web-based and mobile GIS projects and integrated different open-sourced packages, libraries and solutions (e.g. web viewers for 3D, BIM, UAV meshes and point clouds, etc.) to support internal operation.</p></div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/t6.jpg" alt="..." /></div>
                         <div class="timeline-panel">
                             <div class="timeline-heading">
                                 <h4>September 2020</h4>
                                 <h4 class="subheading">Knowledge Expansion</h4>
                             </div>
-                            <div class="timeline-body"><p class="text-muted">Given an opportunity to admit to the Master Degree in Urban Analytics to acquire the state-of-the-art data acquisition and analytics technologies./p></div>
+                            <div class="timeline-body"><p class="text-muted">Given an opportunity to be enrolled in Master programme of Urban Analytics (HKU) to acquire the state-of-the-art data acquisition and analytics technologies.</p></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/t7.jpg" alt="..." /></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>2021-Now</h4>
+                                <h4 class="subheading">'40' is the New Twenty</h4>
+                            </div>
+                            <div class="timeline-body"><p class="text-muted">Started a research project to migrate existing existing web GIS projects/applications to adopt the new 3D tile map services. 3D visualization map in this mini-project adopts Mapbox and three.js solutions. This prototype can be extended to other urban design and reimaging projects which allows interactive public participation through the Internet.</p></div>
                         </div>
                     </li>
                     <li class="timeline-inverted">
@@ -519,20 +549,17 @@
                 </div>
                     <div class="col-lg-5">
                         <div class="team-member">
-                            <img class="mx-auto rounded-circle" src="assets/img/team/Kenny.jpg" alt="..." />
+                            <img class="mx-auto rounded-circle" src="assets/img/kenny.jpg" alt="..." />
                             <h4>Kenny Yiu</h4>
-                            <p class="text-muted">HKU Student; Senior Land Surveyor of LandsD</p>
-                            <a class="btn btn-dark btn-social mx-2" href="tel:+85237499696" aria-label="Kenny Yiu Work Phone"><i class="fas fa-phone"></i></a>
-                            <a class="btn btn-dark btn-social mx-2" href="mailto:slssdms@landsd.gov.hk" aria-label="Kenny Yiu Email Address"><i class="fas fa-at"></i></a>
-                            <a class="btn btn-dark btn-social mx-2" href="https://github.com/yknkenny" aria-label="Kenny Yiu GitHub"><i class="fab fa-github-alt"></i></a>
+                            <p class="text-muted">HKU Student; Senior Land Surveyor, LandsD</p>
+                            <a class="btn btn-dark btn-social mx-2" href="tel:+852xxxxxxxx" aria-label="Kenny Yiu Work Phone"><i class="fas fa-phone"></i></a>
+                            <a class="btn btn-dark btn-social mx-2" href="mailto:slsxxxx@landsd.gov.hk" aria-label="Kenny Yiu Email Address"><i class="fas fa-at"></i></a>
+                            <a class="btn btn-dark btn-social mx-2" href="https://github.com/xxxxxxxx" aria-label="Kenny Yiu GitHub"><i class="fab fa-github-alt"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-8 mx-auto text-center"><p class="large text-muted">A part-time Master's Student of <!--a href="https://www.arch.hku.hk/programmes/upad/master-of-science-in-urban-analytics"-->Urban Analytics</a> 
-                        from the University of Hong Kong (HKU) interested in different methodologies in data acquisition and analytics, and a Senior Land Surveyor of the <!--a href="https://www.landsd.gov.hk/"-->Lands Department (LandsD)</a> 
-                        for different Geographic Information System (GIS) projects and participate in formulation of spatial data standards to support the overall development of 
-                        <!--a href="https://www.csdi.gov.hk"-->Common Spatial Data Infrastructure (CSDI)</a> in Hong Kong.</p></div>
+                    <div class="col-lg-8 mx-auto text-center"><p class="large text-muted">A part-time Master's student enrolled in Urban Analytics of HKU, and a full-time employee in LandsD participating in different GIS projects, research of development, and formulation of spatial data standards to support overall development of Common Spatial Data Infrastructure (CSDI) in Hong Kong.</div>
                 </div>
             </div>
         </section>
@@ -542,16 +569,16 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-md-3 col-sm-6 my-3">
-                        <a href="https://pytorch.org/"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/PyTorch.svg" alt="..." aria-label="PyTorch Logo" /></a>
+                        <a href="https://pytorch.org/"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/pytorch.svg" alt="..." aria-label="PyTorch Logo" /></a>
                     </div>
                     <div class="col-md-3 col-sm-6 my-3">
-                        <a href="https://developers.google.com/maps"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/google.svg" alt="..." aria-label="Google Logo" /></a>
+                        <a href="https://developers.google.com/maps"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/google.svg" alt="..." aria-label="Google Logo" /></a>
                     </div>
                     <div class="col-md-3 col-sm-6 my-3">
-                        <a href="https://www.mapbox.com"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/mapbox.svg" alt="..." aria-label="Mapbox Logo" /></a>
+                        <a href="https://www.mapbox.com"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/mapbox.svg" alt="..." aria-label="Mapbox Logo" /></a>
                     </div>
                     <div class="col-md-3 col-sm-6 my-3">
-                        <a href="https://threejs.org/"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/3js.svg" alt="..." aria-label="Three.js Logo" /></a>
+                        <a href="https://threejs.org/"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/3js.svg" alt="..." aria-label="Three.js Logo" /></a>
                     </div>
                 </div>
             </div>
@@ -585,20 +612,20 @@
                                     <!-- Project details-->
                                     <h2 class="text-uppercase">Data Acquisition</h2>
                                     <p class="item-intro text-muted">Batch collection of GSV panoramas</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/1a.jpg" alt="...batch download" />
-                                    <p>Grab all GSV tiles along trunk roads and footpaths of the WKCD areas using the Python scripts. Google Map API will direct every trial to the nearest available GSV capture point for download. </p>
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/m1a.jpg" alt="...batch download" />
+                                    <p class="line-height-1">Grab all GSV tiles along trunk roads and footpaths of WKCD areas using Python scripts. Google Map API will direct every trial to nearest available GSV capture point for download. </p>
                                     <ul class="list-inline">
-                                        <li class="text-start">
+                                        <li class="text-start margin-large-1">
                                             <strong>Characteristics of Each GSV Scene:</strong>
-                                            Each sperical view contains 26 (H) x 13 (V) tiles, i.e. 338 tiles, of each consists of 512 x 512 pixels. Each view and tile are labelled with a unique 'PanoID' and a pair of 'X' (from 0 to 25) and 'Y' (from 0 to 12) tile number.
+                                            Each sperical view contains <span class="highlight-green">26 (H) x 13 (V) tiles, i.e. 338 tiles</span>, of each consists of 512 x 512 pixels. Each view and tile are labelled with a unique 'PanoID' and a pair of 'X' (from 0 to 25) and 'Y' (from 0 to 12) tile number.
                                         </li>
-                                        <li class="text-start">
+                                        <li class="text-start margin-large-1">
                                             <strong>Total No. of GSV Tiles Downloaded:</strong>
-                                            Downloaded about XX,XXX tiles for two days.
+                                            Downloaded <span class="highlight-green">324,142 tiles (958 x 338) in four days</span>.
                                         </li>
-                                        <li class="text-start">
+                                        <li class="text-start margin-large-1">
                                             <strong>Attention to Developers:</strong>
-                                            Google will block download service for GSV tiles for prolonged use. Developers must get a 'distint' coordinate list before action to shorten the overall download time and avoid being blocked.
+                                            <span class="highlight-green">Google will block download service</span> for GSV tiles for prolonged use. Developers must get a 'distint' coordinate list before action to shorten overall download time and avoid being blocked.
                                         </li>
                                     </ul>
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
@@ -625,7 +652,7 @@
                                     <!-- Project details-->
                                     <h2 class="text-uppercase">Data Exploitation</h2>
                                     <p class="item-intro text-muted">Ex</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/2.jpg" alt="..." />
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/m2.jpg" alt="..." />
                                     <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                                     <ul class="list-inline">
                                         <li class="text-start">
@@ -661,7 +688,7 @@
                                     <!-- Project details-->
                                     <h2 class="text-uppercase">Project Name</h2>
                                     <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/3.jpg" alt="..." />
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/m3.jpg" alt="..." />
                                     <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                                     <ul class="list-inline">
                                         <li>
@@ -697,7 +724,7 @@
                                     <!-- Project details-->
                                     <h2 class="text-uppercase">Project Name</h2>
                                     <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/4.jpg" alt="..." />
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/m4.jpg" alt="..." />
                                     <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                                     <ul class="list-inline">
                                         <li>
@@ -733,7 +760,7 @@
                                     <!-- Project details-->
                                     <h2 class="text-uppercase">Project Name</h2>
                                     <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/5.jpg" alt="..." />
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/m5.jpg" alt="..." />
                                     <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                                     <ul class="list-inline">
                                         <li>
@@ -769,7 +796,7 @@
                                     <!-- Project details-->
                                     <h2 class="text-uppercase">Project Name</h2>
                                     <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/6.jpg" alt="..." />
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/m6.jpg" alt="..." />
                                     <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                                     <ul class="list-inline">
                                         <li>
