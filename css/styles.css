@@ -11915,5 +11915,5 @@ span.highlight-green {
 
 span.highlight-yellow {
   background-color: #ffff99;
-  box-shadow: 1px 1px 0 1px #ffff99, -1px 1px 0 1px #ffff99;
+  box-shadow: 1px 2px 0 1px #ffff99 inset, -1px 2px 0 1px #ffff99 inset;
 }

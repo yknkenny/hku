@@ -45,7 +45,7 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
                         <li class="nav-item"><a class="nav-link" href="#mapp">Map</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#services">Story</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#services">Why CV?</a></li>
                         <li class="nav-item"><a class="nav-link" href="#portfolio">Methodology</a></li>
                         <li class="nav-item"><a class="nav-link" href="#timeline">timeline</a></li>
                         <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
@@ -391,7 +391,7 @@
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Assemble</div>
-                                <div class="portfolio-caption-subheading text-muted">Stitch up all 360-panao tiles</div>
+                                <div class="portfolio-caption-subheading text-muted">Stitch up all 360-pano tiles</div>
                             </div>
                         </div>
                     </div>
@@ -492,7 +492,7 @@
                                 <h4>2015-2016</h4>
                                 <h4 class="subheading">Project Tango Prototype</h4>
                             </div>
-                            <div class="timeline-body"><p class="text-muted">Being selected to be the first batch of developers to participat in the Google Project Tango, and explored the feasibility of adopting the Simultaneous Localization and Mapping (SLAM) technology for indoor and outdoor spatial data acquisition through the Project Tango tablet prototype.</p></div>
+                            <div class="timeline-body"><p class="text-muted">Being selected to be the first batch of developers to participat in the Google Project Tango, and explored feasibility of adopting the Simultaneous Localization and Mapping (SLAM) technology for indoor and outdoor spatial data acquisition through the Project Tango tablet prototype.</p></div>
                         </div>
                     </li>
                     <li>
@@ -590,10 +590,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-4 text-lg-start">Copyright &copy; Kenny 2022</div>
                     <div class="col-lg-4 my-3 my-lg-0"></div>
-                    <div class="col-lg-4 text-lg-end">
-                        <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
-                        <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
-                    </div>
+                    <div class="col-lg-4 text-lg-end">CREDITS to Unsplash for Photos</div>
                 </div>
             </div>
         </footer>
@@ -611,13 +608,13 @@
                                 <div class="modal-body">
                                     <!-- Project details-->
                                     <h2 class="text-uppercase">Data Acquisition</h2>
-                                    <p class="item-intro text-muted">Batch collection of GSV panoramas</p>
+                                    <p class="item-intro text-muted margin-large-1">Batch collection of GSV panoramas</p>
                                     <img class="img-fluid d-block mx-auto" src="assets/img/m1a.jpg" alt="...batch download" />
-                                    <p class="line-height-1">Grab all GSV tiles along trunk roads and footpaths of WKCD areas using Python scripts. Google Map API will direct every trial to nearest available GSV capture point for download. </p>
+                                    <p class="line-height-1">The first step is to grab all GSV 360-pano tiles along trunk roads and footpaths of WKCD areas using Python scripts. Google Map API will direct every trial to its nearest available GSV nodal point (or camera capture point) for download.</p>
                                     <ul class="list-inline">
                                         <li class="text-start margin-large-1">
                                             <strong>Characteristics of Each GSV Scene:</strong>
-                                            Each sperical view contains <span class="highlight-green">26 (H) x 13 (V) tiles, i.e. 338 tiles</span>, of each consists of 512 x 512 pixels. Each view and tile are labelled with a unique 'PanoID' and a pair of 'X' (from 0 to 25) and 'Y' (from 0 to 12) tile numbers.
+                                            Each spherical view contains <span class="highlight-green">13 (V) x 26 (H) tiles, i.e. 338 tiles</span>, of each consists of 512 x 512 pixels. Each view and tile are labelled with a unique 'PanoID' and a pair of 'X' (from 0 to 25) and 'Y' (from 0 to 12) tile numbers.
                                         </li>
                                         <li class="text-start margin-large-1">
                                             <strong>Total No. of GSV Tiles Downloaded:</strong>
@@ -651,17 +648,17 @@
                                 <div class="modal-body">
                                     <!-- Project details-->
                                     <h2 class="text-uppercase">Data Exploitation</h2>
-                                    <p class="item-intro text-muted">Ex</p>
+                                    <p class="item-intro text-muted margin-large-1">Unleashing other GSV attributes</p>
                                     <img class="img-fluid d-block mx-auto" src="assets/img/m2a.jpg" alt="..." />
-                                    <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                    <p class="line-height-1">Next step is to retrieve all essential parameters for rectificaiton and geolocaiton processes of GSV 360-pano images from XML files of respective 'PanoID' in later stages.</p>
                                     <ul class="list-inline">
-                                        <li class="text-start">
-                                            <strong>Client:</strong>
-                                            Explore
+                                        <li class="text-start margin-large-1">
+                                            <strong>GSV Attributes:</strong>
+                                            Each GSV 360-pano shot contains at least one 'PanoID' storing all essential parameters for rectification and geolocation in GSV applications, including <span class="highlight-green">geographic coordinates in WGS84 Lat/Long</span>, elevation w.r.t. WGS84 and EGM96 model, street name, region and country, <span class="highlight-green">camera tilt, pitch and yaw values</span>, encrypted <span class="highlight-green">depth map</span>, etc.
                                         </li>
-                                        <li class="text-start">
-                                            <strong>Category:</strong>
-                                            Graphic Design
+                                        <li class="text-start margin-large-1">
+                                            <strong>Depth Map:</strong>
+                                            An encrypted depth map in a 256-by-512 array storing all depth information of each 360-pano view for geolocation purpose. Opened <a href="https://stackoverflow.com/questions/52790436/convert-depth-map-base64-of-google-street-view-to-image">decryption library (base64)</a> is available.
                                         </li>
                                     </ul>
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
@@ -686,18 +683,14 @@
                             <div class="col-lg-8">
                                 <div class="modal-body">
                                     <!-- Project details-->
-                                    <h2 class="text-uppercase">Project Name</h2>
-                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                    <h2 class="text-uppercase">Data Assembling</h2>
+                                    <p class="item-intro text-muted margin-large-1">Stitching  all 360-pano tiles for deep learning and mapping</p>
                                     <img class="img-fluid d-block mx-auto" src="assets/img/m3a.jpg" alt="..." />
-                                    <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                    <p class="line-height-1">The last step for data acquistion and pre-procesing is to consolidate all 13 (V) x 26 (H) tiles of each spherical view to a single spherical image, consisting of 6,656 x 13,312 pixels, for subsequent data training, prediction and mapping.</p>
                                     <ul class="list-inline">
-                                        <li>
-                                            <strong>Client:</strong>
-                                            Finish
-                                        </li>
-                                        <li>
-                                            <strong>Category:</strong>
-                                            Identity
+                                        <li class="text-start margin-large-1">
+                                            <strong>Data Misalignment:</strong>
+                                            <span class="highlight-green">About 5% spherical images are not perfectly aligned</span> owing to non-conformality of GSV camera and sensor parameters. They can be removed from the pool to avoid affecting both prediction and mapping results.
                                         </li>
                                     </ul>
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
@@ -722,18 +715,14 @@
                             <div class="col-lg-8">
                                 <div class="modal-body">
                                     <!-- Project details-->
-                                    <h2 class="text-uppercase">Project Name</h2>
-                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/m4.jpg" alt="..." />
-                                    <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                    <h2 class="text-uppercase">Object Training</h2>
+                                    <p class="item-intro text-muted margin-large-1">Using local data to train dataset</p>
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/m4a.jpg" alt="..." />
+                                    <p class="line-height-1">Local data such as different sizes of trees, plants and lightboxes were lablled in this step for training and checking overall performance of model (e.g. intersection over union (IOU) for semantic segmentation of multi-class objects).</p>
                                     <ul class="list-inline">
-                                        <li>
-                                            <strong>Client:</strong>
-                                            Lines
-                                        </li>
-                                        <li>
-                                            <strong>Category:</strong>
-                                            Branding
+                                        <li class="text-start margin-large-1">
+                                            <strong>General Results:</strong>
+                                            The model is not too bad but not too good after 1st epoch training. Larger objects get a higher IOU score but lower scores for smaller objects.
                                         </li>
                                     </ul>
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
@@ -758,18 +747,18 @@
                             <div class="col-lg-8">
                                 <div class="modal-body">
                                     <!-- Project details-->
-                                    <h2 class="text-uppercase">Project Name</h2>
-                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/m5.jpg" alt="..." />
-                                    <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                    <h2 class="text-uppercase">Object Recognition</h2>
+                                    <p class="item-intro text-muted margin-large-1">Using training results to detect on-street features</p>
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/m5a.jpg" alt="..." />
+                                    <p class="line-height-1">360-pano images containing trees, plants and street furnitures are loaded to trained model for segmentation and multi-class recognition. Their physical characteristics such as heights and widths can be estimated from respective boundary boxes.</p>
                                     <ul class="list-inline">
-                                        <li>
-                                            <strong>Client:</strong>
-                                            Southwest
+                                        <li class="text-start margin-large-1">
+                                            <strong>Feature Recognition:</strong>
+                                            Over 200 objects are detected from GSV images.
                                         </li>
-                                        <li>
-                                            <strong>Category:</strong>
-                                            Website Design
+                                        <li class="text-start margin-large-1">
+                                            <strong>Further Processing:</strong>
+                                            Same feature might be recognized repeated from different 360-pano views. An algorithm is required to remove repeated features (e.g. setting spatial tolerance of features owing very simliar geometric values).
                                         </li>
                                     </ul>
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
@@ -794,20 +783,20 @@
                             <div class="col-lg-8">
                                 <div class="modal-body">
                                     <!-- Project details-->
-                                    <h2 class="text-uppercase">Project Name</h2>
-                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/m6.jpg" alt="..." />
-                                    <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                    <h2 class="text-uppercase">Object Transfer</h2>
+                                    <p class="item-intro text-muted margin-large-1">Transferring recognized objects to 3D world</p>
+                                    <img class="img-fluid d-block mx-auto line-height-1" src="assets/img/m6.jpg" alt="..." />
+                                    <!--p class="line-height-1">Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                                     <ul class="list-inline">
-                                        <li>
+                                        <li class="text-start margin-large-1">
                                             <strong>Client:</strong>
                                             Window
                                         </li>
-                                        <li>
+                                        <li class="text-start margin-large-1">
                                             <strong>Category:</strong>
                                             Photography
                                         </li>
-                                    </ul>
+                                    </ul-->
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
                                         <i class="fas fa-xmark me-1"></i>
                                         Close
