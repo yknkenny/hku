@@ -610,19 +610,20 @@
                                     <h2 class="text-uppercase">Data Acquisition</h2>
                                     <p class="item-intro text-muted margin-large-1">Batch collection of GSV panoramas</p>
                                     <img class="img-fluid d-block mx-auto" src="assets/img/m1a.jpg" alt="...batch download" />
-                                    <p class="line-height-1">The first step is to grab all GSV 360-pano tiles along trunk roads and footpaths of WKCD areas using Python scripts. Google Map API will direct every trial to its nearest available GSV nodal point (or camera capture point) for download.</p>
+                                    <p class="line-height-1"><i>(Picture: Thumbnails of 360-pano tiles of WKCD area)</i></p>
+                                    <p class="line-height-1">The first step is to grab all GSV 360-pano tiles along trunk roads and footpaths of WKCD areas using the Python scripts. Google Map API will direct every trial to the nearest available GSV nodal point for tile download automatically.</p>
                                     <ul class="list-inline">
                                         <li class="text-start margin-large-1">
-                                            <strong>Characteristics of Each GSV Scene:</strong>
-                                            Each spherical view contains <span class="highlight-green">13 (V) x 26 (H) tiles, i.e. 338 tiles</span>, of each consists of 512 x 512 pixels. Each view and tile are labelled with a unique 'PanoID' and a pair of 'X' (from 0 to 25) and 'Y' (from 0 to 12) tile numbers.
+                                            <strong>Characteristics of GSV Spherical View:</strong>
+                                            Each spherical view contains <span class="highlight-green">13 (V) x 26 (H) tiles, i.e. 338 tiles</span>, of each consists of 512 x 512 pixels. Each view and tile are labelled with unique 'PanoID(s)' accompanied with a pair of 'X' (from 0 to 25) and 'Y' (from 0 to 12) tile numbers.
                                         </li>
                                         <li class="text-start margin-large-1">
-                                            <strong>Total No. of GSV Tiles Downloaded:</strong>
-                                            Downloaded <span class="highlight-green">324,142 tiles (958 x 338) in four days</span>.
+                                            <strong>No. of GSV Tiles Downloaded:</strong>
+                                            Downloaded <span class="highlight-green">324,142 tiles (958 x 338) of WKCD areas in four days</span>.
                                         </li>
                                         <li class="text-start margin-large-1">
                                             <strong>Attention to Developers:</strong>
-                                            <span class="highlight-green">Google will block download services</span> for prolonged uses. Developers must get a 'distint' coordinate list before action to shorten overall download time and avoid being blocked.
+                                            <span class="highlight-green">Google will block the download services</span> for prolonged uses. Developers are advised to consolidate a 'distint' coordinate list before the action to shorten the overall download time and avoid being blocked.
                                         </li>
                                     </ul>
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
@@ -650,15 +651,16 @@
                                     <h2 class="text-uppercase">Data Exploitation</h2>
                                     <p class="item-intro text-muted margin-large-1">Unleashing other GSV attributes</p>
                                     <img class="img-fluid d-block mx-auto" src="assets/img/m2a.jpg" alt="..." />
-                                    <p class="line-height-1">Next step is to retrieve all essential parameters for rectificaiton and geolocaiton processes of GSV 360-pano images from XML files of respective 'PanoID' in later stages.</p>
+                                    <p class="line-height-1"><i>(Picture: Newsletters reported by OBSERVER, URL: https://observer.com/2014/03/new-york-city-gets-a-jungle-book-makeover-with-google-street-view-hack/)</i></p>
+                                    <p class="line-height-1">The next step is to retrieve all essential parameters for rectificaiton and geolocaiton processes of GSV 360-pano images from XML files of respective 'PanoID' in the later stages.</p>
                                     <ul class="list-inline">
                                         <li class="text-start margin-large-1">
                                             <strong>GSV Attributes:</strong>
-                                            Each GSV 360-pano shot contains at least one 'PanoID' storing all essential parameters for rectification and geolocation in GSV applications, including <span class="highlight-green">geographic coordinates in WGS84 Lat/Long</span>, elevation w.r.t. WGS84 and EGM96 model, street name, region and country, <span class="highlight-green">camera tilt, pitch and yaw values</span>, encrypted <span class="highlight-green">depth map</span>, etc.
+                                            Each GSV 360-pano shot contains at least one 'PanoID(s)' storing all essential parameters for rectification and geolocation in GSV applications, including <span class="highlight-green">geographic coordinates in WGS84 latitude and longitude</span>, elevation with respect to the WGS84 and EGM96 models, house numbers, street names, regions and countries, <span class="highlight-green">camera tilt, pitch and yaw values</span>, encrypted <span class="highlight-green">depth maps</span>, etc.
                                         </li>
                                         <li class="text-start margin-large-1">
-                                            <strong>Depth Map:</strong>
-                                            An encrypted depth map in a 256-by-512 array storing all depth information of each 360-pano view for geolocation purpose. Opened <a href="https://stackoverflow.com/questions/52790436/convert-depth-map-base64-of-google-street-view-to-image">decryption library (base64)</a> is available.
+                                            <strong>Characteristics of Depth Map:</strong>
+                                            An encrypted depth map in a 256-by-512 array stores all depth information with respect to respective 360-pano view for geolocation purpose. The <span class="highlight-green">depth map</span> and <span class="highlight-green">surface normal vectors</span> of detected objects were <span class="highlight-green">were successfully unlocked by a Swedish developer</span> and transferred to an "Urban Jungle Street View" application for urban green and landscape design in some major cities around the world in 2014. Some opened <!--a href="https://stackoverflow.com/questions/52790436/convert-depth-map-base64-of-google-street-view-to-image"-->decryption libraries for Java and Python launguages are available.
                                         </li>
                                     </ul>
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
@@ -686,10 +688,11 @@
                                     <h2 class="text-uppercase">Data Assembling</h2>
                                     <p class="item-intro text-muted margin-large-1">Stitching  all 360-pano tiles for deep learning and mapping</p>
                                     <img class="img-fluid d-block mx-auto" src="assets/img/m3a.jpg" alt="..." />
-                                    <p class="line-height-1">The last step for data acquistion and pre-procesing is to consolidate all 13 (V) x 26 (H) tiles of each spherical view to a single spherical image, consisting of 6,656 x 13,312 pixels, for subsequent data training, prediction and mapping.</p>
+                                    <p class="line-height-1"><i>(Picture: Depth map in 256 x 512 pixel (top), and downsized spherical image in 256 x 512 pixels (bottom))</i></p>
+                                    <p class="line-height-1">The last step for data acquistion and pre-procesing is to merge all 13 (V) x 26 (H) tiles of each spherical view to a single spherical image, consisting of <span class="highlight-green">6,656 x 13,312 pixels</span>, for subsequent data training, object segmentation and mapping purposes.</p>
                                     <ul class="list-inline">
                                         <li class="text-start margin-large-1">
-                                            <strong>Data Misalignment:</strong>
+                                            <strong>Data Misalignment Problem:</strong>
                                             <span class="highlight-green">About 5% spherical images are not perfectly aligned</span> owing to non-conformality of GSV camera and sensor parameters. They can be removed from the pool to avoid affecting both prediction and mapping results.
                                         </li>
                                     </ul>
@@ -715,14 +718,23 @@
                             <div class="col-lg-8">
                                 <div class="modal-body">
                                     <!-- Project details-->
-                                    <h2 class="text-uppercase">Object Training</h2>
+                                    <h2 class="text-uppercase">Model Training</h2>
                                     <p class="item-intro text-muted margin-large-1">Using local data to train dataset</p>
                                     <img class="img-fluid d-block mx-auto" src="assets/img/m4a.jpg" alt="..." />
-                                    <p class="line-height-1">Local data such as different sizes of trees, plants and lightboxes were lablled in this step for training and checking overall performance of model (e.g. intersection over union (IOU) for semantic segmentation of multi-class objects).</p>
+                                    <p class="line-height-1"><i>(Picture: Training results after inclusion of local data)</i></p>
+                                    <p class="line-height-1">The matrix of COCO dataset riding on the ResNet-50 CNN was transffered and modified for object segmentation and recognition for this mini-project. Different sizes of trees and plants were identified and lablled for further model training and examination.</p>
                                     <ul class="list-inline">
                                         <li class="text-start margin-large-1">
+                                            <strong>Training Dataset:</strong>
+                                            About 100 trees and plants in Tiu Keng Leng, Kowloon East, were identified and labelled.
+                                        </li>
+                                        <li class="text-start margin-large-1">
                                             <strong>General Results:</strong>
-                                            The model is not too bad but not too good after 1st epoch training. Larger objects get a higher IOU score but lower scores for smaller objects.
+                                            Only <span class="highlight-green">ONE complete pass of the training dataset</span> (i.e. 1st epoch training) on top of the ResNet-50 CNN algorithm was conducted. The <span class="highlight-green">larger objects</span> generally <span class="highlight-green">get higher intersection over union (IOU)</span> compared to the smaller objects.
+                                        </li>
+                                        <li class="text-start margin-large-1">
+                                            <strong>Model Performance:</strong>
+                                            The ratio of model training to model validation is 7 to 3. Random split for 10 times was performed to avoid sampling bias. Only trees and plants with IOU scores over 0.8 is accepted. The model <span class="highlight-green">accuracy for 10-time validation is about 0.7</span>.
                                         </li>
                                     </ul>
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
@@ -750,15 +762,16 @@
                                     <h2 class="text-uppercase">Object Recognition</h2>
                                     <p class="item-intro text-muted margin-large-1">Using training results to detect on-street features</p>
                                     <img class="img-fluid d-block mx-auto" src="assets/img/m5a.jpg" alt="..." />
-                                    <p class="line-height-1">360-pano images containing trees, plants and street furnitures are loaded to trained model for segmentation and multi-class recognition. Their physical characteristics such as heights and widths can be estimated from respective boundary boxes.</p>
+                                    <p class="line-height-1"><i>(Picture: Object segmentation and recognition results of one GSV spherical view along Nga Cheung Road (雅翔道), Kowloon West)</i></p>
+                                    <p class="line-height-1">All 360-pano images of WKCD area were loaded to the model for object segmentation and multi-class recognition. The positions, heights and spreads of trees and plants with respect to respective spherical images can be estimated from the boundary boxes.</p>
                                     <ul class="list-inline">
                                         <li class="text-start margin-large-1">
-                                            <strong>Feature Recognition:</strong>
-                                            Over 200 objects are detected from GSV images.
+                                            <strong>General Results:</strong>
+                                            <span class="highlight-green">Over 200 objects were recognized</span> from GSV images. The tallest and shortest trees and plants are over 15 meters and 3 meters respectively.
                                         </li>
                                         <li class="text-start margin-large-1">
                                             <strong>Further Processing:</strong>
-                                            Same feature might be recognized repeated from different 360-pano views. An algorithm is required to remove repeated features (e.g. setting spatial tolerance of features owing very simliar geometric values).
+                                            Repeated but same feature might be recognized from different 360-pano views. An algorithm was applied to remove all repeated features, e.g. setting spatial tolerance of features owing very simliar geometric values, etc.
                                         </li>
                                     </ul>
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
