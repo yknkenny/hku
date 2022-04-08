@@ -734,7 +734,7 @@
                                         </li>
                                         <li class="text-start margin-large-1">
                                             <strong>Model Performance:</strong>
-                                            The ratio of model training to testing is 7 to 3. Random split for 10 times was performed to avoid sampling bias. Only trees and plants with IOU scores over 0.8 is accepted. The <span class="highlight-green">model accuracy is about 0.7</span>.
+                                            The ratio of model training to testing is 7 to 3. Random split for 10 times was performed to avoid sampling bias. Only trees and plants with IOU over the thershold at 0.5 is accepted. The <span class="highlight-green">model accuracy is about 0.8</span>.
                                         </li>
                                     </ul>
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
@@ -767,7 +767,7 @@
                                     <ul class="list-inline">
                                         <li class="text-start margin-large-1">
                                             <strong>General Results:</strong>
-                                            <span class="highlight-green">Over 200 objects were recognized</span> from GSV images. The tallest and shortest trees and plants are over 15 meters and 3 meters respectively.
+                                            <span class="highlight-green">Near 300 objects were recognized</span> from GSV images. The confident score (reflecting how likely the box contains an object and how accurate is the boundary box) is about 0.7. The tallest and shortest trees and plants are over 15 meters and 3 meters respectively.
                                         </li>
                                         <li class="text-start margin-large-1">
                                             <strong>Further Processing:</strong>
