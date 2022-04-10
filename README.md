@@ -31,13 +31,13 @@ Many research papers discussed the way of acquiring the desired features from GS
 
 ## Data Visualization - Importing 3D Objects to 3D Web Map View
 
-1. Export the results to "model.js" file, including geographic coordinates (latitudes and longitudes), heights of objects (for scaling in the 3D map), orientations, types of objects/features, and the relative directories of the 3D models.
+1. Export the results to "[model.js](https://github.com/yknkenny/hku/blob/main/js/fightpath.js)" file, including geographic coordinates (latitudes and longitudes), heights of objects (for scaling in the 3D map), orientations, types of objects/features, and the relative directories of the 3D models.
 2. All 3D models should be reduced to the Y-scale at 1 meter in the "Blender" software, trimmed with minimal textual sizes, vertexes, edges and faces, exported to ".glb" format (other formats such as ".fbx" or ".dae" are also supported but requiring further configuration and additional parameters in "main.js" file), and stored in the "./model" folder. Scaling of the object in the model will be applied automatically based on the heights provided to.
 
 
 ## Data Visualization - Configuration of Flight Line/ Walk Through Pathes
 
-1. Open "flightpath.js" file and copy the flighline attributes from Mapbox (including latitudes, longitudes, zoom levels, bearings, pitches, moving speeds, minimum zoom levels).
+1. Open "[flightpath.js](https://github.com/yknkenny/hku/blob/main/js/fightpath.js)" file and copy the flighline attributes from Mapbox (including latitudes, longitudes, zoom levels, bearings, pitches, moving speeds, minimum zoom levels).
 2. No limitation for the number of stopping/staying point using this file.
 
 ## Virtual Tour at West Kowloon Cultural District (WKCD)
@@ -46,4 +46,6 @@ Many research papers discussed the way of acquiring the desired features from GS
 2. Drag any 3D objects by pressing "Shift" + left mouse click.
 3. Rotate any 3D object by pressing "Alt" + left mouse click.
 4. Move any 3D objects up and down (along z-axis) by pressing "Ctrl" + left mouse click.
-5. [Enjoy it through this link](https://yknkenny.github.io/hku)
+5. [Enjoy it through this link](https://yknkenny.github.io/hku).
+
+Last update: 11 Apr 2022
