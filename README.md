@@ -33,7 +33,7 @@ Many research papers discussed the way of acquiring the desired features from GS
 
 1. Export the results to "[model.js](https://github.com/yknkenny/hku/blob/main/js/fightpath.js)" file, including geographic coordinates (latitudes and longitudes), heights of objects (for scaling in the 3D map), orientations, types of objects/features, and the relative directories of the 3D models.
 2. All 3D models should be reduced to the Y-scale at 1 meter in the "Blender" software, trimmed with minimal textual sizes, vertexes, edges and faces, exported to ".glb" format (other formats such as ".fbx" or ".dae" are also supported but requiring further configuration and additional parameters in "main.js" file), and stored in the "./model" folder. Scaling of the object in the model will be applied automatically based on the heights provided to.
-
+3. Basic optimization for data streaming to local computer have been configured to allow massive repeated 3D objects being loaded and viewed smoothly (note: the web demonstration loads over 1,700 3D objects). To allow the best user experience of enjoying the virtual tour, further optimization (e.g. clear 'out-of-screen' memory from RAM of local computer) is required in coming future. Please **AVOID loading heavy 3D models or over 3,000 tiny objects/models** in this web demonstration prototype.
 
 ## Data Visualization - Configuration of Flight Line/ Walk Through Pathes
 

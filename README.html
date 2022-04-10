@@ -1,85 +1,50 @@
-<h1 id="itsaboutroadsidegreenandfeaturemappingusinggooglestreetviewgsvresnet50convolutionalneuralnetworkcnn">It's about Road-side Green and Feature Mapping Using Google Street View (GSV) &amp; ResNet-50 Convolutional Neural Network (CNN)</h1>
-
+<h1 id="its-about-road-side-green-and-feature-mapping-using-google-street-view-gsv--resnet-50-convolutional-neural-network-cnn">It&#39;s about Road-side Green and Feature Mapping Using Google Street View (GSV) &amp; ResNet-50 Convolutional Neural Network (CNN)</h1>
 <p>by <strong>Kenny YIU</strong> <em>(for the mini-project of course programme URBA6402)</em></p>
-
-<h2 id="reasonsforadoptingcomputervisionforonstreetmapping">Reasons for Adopting Computer Vision for On-street Mapping</h2>
-
+<h2 id="reasons-for-adopting-computer-vision-for-on-street-mapping">Reasons for Adopting Computer Vision for On-street Mapping</h2>
 <p>Many research papers discussed the way of acquiring the desired features from GSV for on-street urban planning and design study using Computer Vision technology. With use of the hidden depth map and other attributes of each 360-pano view downloadable from GSV, the green vegetation and other tiny features such as traffic sign boards and lightboxes, etc., which are not available in the current basemap (i.e. iB1000 dataset) can also be captured. Other advantages are:</p>
-
 <ol>
 <li><strong>Free and Convenient:</strong> GSV services are free for use in Google Map. In general, Google tries to take new street-view photos along major trunk roads of major cities once every year. 360-pano images can be downloaded using online tools or programming scripts. Data captured in Feb 2022 in Tiu Keng Leng (調景嶺) have been released.</li>
-
 <li><strong>Abundant GSV Data:</strong> Every 360-pano view covers a series of data and attributes, including 13 (V) x 26 (H) tiles, i.e. 338 pano-tile images, alignment parameters fo cameras and sensors, and physical characteristics of most road-side features. Both geographic locations and dimensions can be estimated through a series of computation processes.</li>
-
 <li><strong>Mature Artifical Intelligence (AI) Technologies:</strong> Deep learning technologies for computer vision are mature. Open pretrained models (e.g. Common Objects In Context (COCO) dataset riding on ResNet-50 CNN) can be transferred and modified for segmentation and recognition of objects in local context. Computational costs on data training is relatively low.</li>
 </ol>
-
-<h2 id="dataacquisitiongettinggsvtiles360panoimagesandotherattributes">Data Acquisition - Getting GSV Tiles, 360-pano Images and Other Attributes</h2>
-
+<h2 id="data-acquisition---getting-gsv-tiles-360-pano-images-and-other-attributes">Data Acquisition - Getting GSV Tiles, 360-pano Images and Other Attributes</h2>
 <ol>
-<li>Use a 3 x 3 meters grid along trunk roads and footpaths to get a distinct GSV 360-pano IDs following this URL structure ("https://<span></span>maps.google.com/cbk?output=xml&amp;ll=" + latitude (in deg.deg) + longitude (in deg.deg) + "&amp;dm=1").</li>
-
+<li>Use a 3 x 3 meters grid along trunk roads and footpaths to get a distinct GSV 360-pano IDs following this URL structure (&quot;https://<span></span>maps.google.com/cbk?output=xml&amp;ll=&quot; + latitude (in deg.deg) + longitude (in deg.deg) + &quot;&amp;dm=1&quot;).</li>
 <li>Get 360-pano attributes, such as iamge dates, geographic coordinates (latitudes and longitudes), camera tiles, pitches and yaws and depths, etc., which are essential for rectification and geolocation in later processes.</li>
-
-<li>Use the distinct 360-pano IDs to download all GSV tiles following this URL structure ("http://<span></span>maps.google.com/cbk?output=tile&amp;panoid=" + PanoID + "&amp;zoom=0&amp;x=0&amp;y=0", where x and y are the tile numbers of the PanoID).</li>
-
+<li>Use the distinct 360-pano IDs to download all GSV tiles following this URL structure (&quot;http://<span></span>maps.google.com/cbk?output=tile&amp;panoid=&quot; + PanoID + &quot;&amp;zoom=0&amp;x=0&amp;y=0&quot;, where x and y are the tile numbers of the PanoID).</li>
 <li>Convert colour for each tile from BGR2RGB using CV2 package.</li>
-
 <li>Concate all 13(V) x 26(H) tiles in a single 360-pano image.</li>
-
 <li>Decrypt GSV depth map and convert it as 256 x 512 pixel image following this <a href="https://stackoverflow.com/questions/52790436/convert-depth-map-base64-of-google-street-view-to-image">post</a>.</li>
 </ol>
-
-<h2 id="dataanalyticsobjecttrainingsegmentationrecognitionandtransformation">Data Analytics - Object Training, Segmentation, Recognition and Transformation</h2>
-
+<h2 id="data-analytics---object-training-segmentation-recognition-and-transformation">Data Analytics - Object Training, Segmentation, Recognition and Transformation</h2>
 <ol>
 <li>Download the matrix results of COCO dataset riding on ResNet-50 CNN architecture for localised training.</li>
-
-<li>Use "Labelme" to outline the trees and plants (and other concerned on-street features) and label them.</li>
-
+<li>Use &quot;Labelme&quot; to outline the trees and plants (and other concerned on-street features) and label them.</li>
 <li>Divide the local dataset into training and validation ones (of ratio 7 to 3).</li>
-
 <li>Import the COCO matrix to the ResNet-50 CNN model for localised training (and tune the hyper-parameters if required).</li>
-
 <li>Perform the 1st complete pass of the training dataset and further passes (if required) to ensure a higher model accuracy of not less than 0.7 for validation dataset of the intersection over union (IOU) at 0.5.</li>
-
 <li>Label further trees and plants to enhace the model accuracy if needed.</li>
-
 <li>Predict trees, plants and other on-street features using the model of the confident score (reflecting how likely the box contains an object and how accurate is the boundary box) not less than 0.7.</li>
-
 <li>Export the image coordinates of boundary boxes and on-ground trees, plants and on-street features from the 360-pano images.</li>
-
 <li>Transfer them to the 3D world coordinates and reduce their dimensions, e.g. heights, spreads and on-ground positions, etc.</li>
 </ol>
-
-<h2 id="datavisualizationimporting3dobjectsto3dwebmapview">Data Visualization - Importing 3D Objects to 3D Web Map View</h2>
-
+<h2 id="data-visualization---importing-3d-objects-to-3d-web-map-view">Data Visualization - Importing 3D Objects to 3D Web Map View</h2>
 <ol>
-<li>Export the results to "<a href="https://github.com/yknkenny/hku/blob/main/js/fightpath.js">model.js</a>" file, including geographic coordinates (latitudes and longitudes), heights of objects (for scaling in the 3D map), orientations, types of objects/features, and the relative directories of the 3D models.</li>
-
-<li>All 3D models should be reduced to the Y-scale at 1 meter in the "Blender" software, trimmed with minimal textual sizes, vertexes, edges and faces, exported to ".glb" format (other formats such as ".fbx" or ".dae" are also supported but requiring further configuration and additional parameters in "main.js" file), and stored in the "./model" folder. Scaling of the object in the model will be applied automatically based on the heights provided to.</li>
+<li>Export the results to &quot;<a href="https://github.com/yknkenny/hku/blob/main/js/fightpath.js">model.js</a>&quot; file, including geographic coordinates (latitudes and longitudes), heights of objects (for scaling in the 3D map), orientations, types of objects/features, and the relative directories of the 3D models.</li>
+<li>All 3D models should be reduced to the Y-scale at 1 meter in the &quot;Blender&quot; software, trimmed with minimal textual sizes, vertexes, edges and faces, exported to &quot;.glb&quot; format (other formats such as &quot;.fbx&quot; or &quot;.dae&quot; are also supported but requiring further configuration and additional parameters in &quot;main.js&quot; file), and stored in the &quot;./model&quot; folder. Scaling of the object in the model will be applied automatically based on the heights provided to.</li>
+<li>Basic optimization for data streaming to local computer have been configured to allow massive repeated 3D objects being loaded and viewed smoothly (note: the web demonstration loads over 1,700 3D objects). To allow the best user experience of enjoying the virtual tour, further optimization (e.g. clear &#39;out-of-screen&#39; memory from RAM of local computer) is required in coming future. Please <strong>AVOID loading heavy 3D models or over 3,000 tiny objects/models</strong> in this web demonstration prototype.</li>
 </ol>
-
-<h2 id="datavisualizationconfigurationofflightlinewalkthroughpathes">Data Visualization - Configuration of Flight Line/ Walk Through Pathes</h2>
-
+<h2 id="data-visualization---configuration-of-flight-line-walk-through-pathes">Data Visualization - Configuration of Flight Line/ Walk Through Pathes</h2>
 <ol>
-<li>Open "<a href="https://github.com/yknkenny/hku/blob/main/js/fightpath.js">flightpath.js</a>" file and copy the flighline attributes from Mapbox (including latitudes, longitudes, zoom levels, bearings, pitches, moving speeds, minimum zoom levels).</li>
-
+<li>Open &quot;<a href="https://github.com/yknkenny/hku/blob/main/js/fightpath.js">flightpath.js</a>&quot; file and copy the flighline attributes from Mapbox (including latitudes, longitudes, zoom levels, bearings, pitches, moving speeds, minimum zoom levels).</li>
 <li>No limitation for the number of stopping/staying point using this file.</li>
 </ol>
-
-<h2 id="virtualtouratwestkowloonculturaldistrictwkcd">Virtual Tour at West Kowloon Cultural District (WKCD)</h2>
-
+<h2 id="virtual-tour-at-west-kowloon-cultural-district-wkcd">Virtual Tour at West Kowloon Cultural District (WKCD)</h2>
 <ol>
 <li>Standard navigation using mouse and three mouse buttons.</li>
-
-<li>Drag any 3D objects by pressing "Shift" + left mouse click.</li>
-
-<li>Rotate any 3D object by pressing "Alt" + left mouse click.</li>
-
-<li>Move any 3D objects up and down (along z-axis) by pressing "Ctrl" + left mouse click.</li>
-
+<li>Drag any 3D objects by pressing &quot;Shift&quot; + left mouse click.</li>
+<li>Rotate any 3D object by pressing &quot;Alt&quot; + left mouse click.</li>
+<li>Move any 3D objects up and down (along z-axis) by pressing &quot;Ctrl&quot; + left mouse click.</li>
 <li><a href="https://yknkenny.github.io/hku">Enjoy it through this link</a>.</li>
 </ol>
-
 <p>Last update: 11 Apr 2022</p>
