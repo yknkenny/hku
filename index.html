@@ -8,33 +8,26 @@
         <title>URBA6402 Mini-Project by Kenny</title>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
 
-        <!-- fontawesome icons (free version)-->
+        <!-- Fontawesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 
-        <!-- google fonts-->
+        <!-- Google Fonts-->
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
 
-        <!-- core theme CSS and JS-->
+        <!-- Core HTML CSS and JS-->
         <link href="css/styles.css" rel="stylesheet" />
-        <script src="js/scripts.js"></script>
-        <script src="js/config.js"></script>
-        <script src="js/obj3d.js"></script>
-        <script src="js/flyarray.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="js/index.js"></script>
 
-        <!-- mapbox CSS and JS-->
+        <!-- Mapbox and threebox CSS and JS-->
         <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
         <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
-
-        <!-- threebox CSS and JS-->
-        <!--link href="https://unpkg.com/threebox-plugin/dist/threebox.css" rel="stylesheet" /-->
         <script src="https://unpkg.com/threebox-plugin/dist/threebox.min.js" type="text/javascript"></script>
     </head>
     
     <body id="page-top">
 
-        <!-- navigation bar-->
+        <!-- Navigation Bar-->
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
             <div class="container">
                 <a class="navbar-brand" href="#page-top"><img src="assets/img/navbar-logo.svg" alt="Start Story" /></a>
@@ -54,7 +47,7 @@
             </div>
         </nav>
 
-        <!-- masthead-->
+        <!-- Masthead-->
         <header class="masthead">
             <div class="container">
                 <div class="masthead-subheading">Welcome to Kenny's Studio!</div>
@@ -63,7 +56,7 @@
             </div>
         </header>
 
-        <!-- map-->
+        <!-- Map-->
         <section class="page-section" id="mapp">
             <div class="container">
                 <div class="text-center">
@@ -77,235 +70,13 @@
                     <div id="mapfly" class="mapboxgl-ctrl">
                         <button type="button">Fly to Next</button>
                     </div>
-
-                    <script>
-                        mapboxgl.accessToken = config.accessToken;
-                        
-                        // switcher variable
-                        var mapStyleArr = [{
-                            name: "Color Map",
-                            url: 'mapbox://styles/yknkenny/cl14u3pd1008714l9hgf8o1ym'
-                        }, {
-                            name: "Satellite",
-                            url: "mapbox://styles/mapbox/satellite-streets-v11"
-                        }, {
-                            name: "Chill Map",
-                            url: "mapbox://styles/yknkenny/cl1hk317i000z14qb9c6gnjl9"
-                        }];
-                        //console.log(mapStyleArr.length)
-
-                        // add a map
-                        var map = (window.map = new mapboxgl.Map({
-                            container: 'map', // container ID
-                            style: mapStyleArr[0].url, // style URL
-                            center: [114.156455, 22.299903],
-                            zoom: 16.5,
-                            bearing: 24,
-                            pitch: 45,
-                            hash: true,
-                            antialias: true,
-                        }));
-
-                        // add threebox view
-                        window.tb = new Threebox(
-                            map,
-                            map.getCanvas().getContext('webgl'),
-                            {
-                                defaultLights: true,
-                                terrain: true,
-                                enableSelectingObjects: true,
-                                enableDraggingObjects: true,
-                                enableRotatingObjects: true,
-                                enableTooltips: true,
-                                multiLayer: true, // this will create a default custom layer that will manage a single tb.update
-                            }
-                        );
-
-                        let items = obj3D.length;
-                        let minZoom = 15.5;
-                        let maxZoom = 24;
-                        let toggleableLayerIds = [];
-                       
-                        // add zoom and rotation controls to the map
-                        map.addControl(new mapboxgl.NavigationControl());
-                        
-                        // add a full screen for map display
-                        map.addControl(new mapboxgl.FullscreenControl());
-                        
-
-                        // add map.on(load)
-                        map.on('load', () => { 
-                            
-                            // Create a popup
-                            const popup = new mapboxgl.Popup({
-                                closeButton: false,
-                            });
-
-                            // source from tileset
-                            map.addSource('mapbox', {
-                                type: 'vector',
-                                url: 'mapbox://mapbox.mapbox-streets-v8',
-                            });
-
-                            // add extruded 3D buildings layer
-                            map.addLayer({
-                                'id': '3dbuildings',
-                                'source': 'mapbox',
-                                'source-layer': 'building',
-                                'filter': ['==', 'extrude', 'true'],
-                                'type': 'fill-extrusion',
-                                'minzoom': 15,
-                                'layout': {
-                                    'visibility': 'visible',
-                                },
-                                'paint': {
-                                    'fill-extrusion-height': ["get", "height"],
-                                    'fill-extrusion-base': 0,
-                                    'fill-extrusion-color': 'rgba(164,199,204,1)',
-                                    'fill-extrusion-vertical-gradient': true,
-                                    'fill-extrusion-opacity': 0.3,                    
-                                }
-                            });
-                            createButtons()
-                            
-
-                            // "SWITCHER" button
-                            let index = 0;
-                            const switcher = document.querySelector("#switcher");
-                            switcher.addEventListener("click", ()=> {
-                                map.setStyle(mapStyleArr[++index % mapStyleArr.length].url);
-                                const button = switcher.querySelector("button");
-                                button.textContent = mapStyleArr[(index + 1) % mapStyleArr.length].name;
-                            })
-
-                            // load "SWITCHER" on map div
-                            const container = document.querySelector(".mapboxgl-ctrl-top-left");
-                            //console.log(container)
-                            container.append(switcher);
-
-
-                            // "MAPFLY" button
-                            let flyindex = 0; // copy initial status in the 1st row 
-                            const mapfly = document.querySelector("#mapfly");
-                            mapfly.addEventListener('click', ()=> {
-                                ++flyindex;
-                                map.flyTo({
-                                    center: flyarray[flyindex % flyarray.length].slice(1,3),
-                                    zoom: flyarray[flyindex % flyarray.length][3],
-                                    bearing: flyarray[flyindex % flyarray.length][4],
-                                    pitch: flyarray[flyindex % flyarray.length][5],
-                                    speed: flyarray[flyindex % flyarray.length][6],
-                                    minZoom: flyarray[flyindex % flyarray.length][7],
-                                    essential: true,
-                                });
-                            });    
-                            
-                            // load "SWITCHER" on map div
-                            container.append(mapfly);
-
-
-                            // inital config for loading 3D objects
-                            for (let j = 1; j <= items; j++) {
-                                let l = {
-                                    oid: obj3D[j-1][0],
-                                    layer: obj3D[j-1][5] + obj3D[j-1][0],
-                                    origin: obj3D[j-1].slice(1,3),
-                                    height: obj3D[j-1][3],
-                                    rY: obj3D[j-1][4],
-                                    featype: obj3D[j-1][5],
-                                    path: obj3D[j-1][6],
-                                }
-                                toggleableLayerIds.push(l); //append in array
-                            }
-                            
-                            let i = 0;
-                            toggleableLayerIds.forEach((l) => { //call each element in array
-                                i++;
-                                map.addLayer(createCustomLayer(l.oid, l.layer, l.origin, l.height, l.rY, l.featype, l.path), 'waterway-label');
-                                tb.setLayerZoomRange(l.layer, minZoom, maxZoom);
-                            });
-
-                            function createCustomLayer(oid, layerId, origin, height, rY, featype, path) {
-                                //create the layer
-                                let customLayer3D = {
-                                    id: layerId,
-                                    type: 'custom',
-                                    renderingMode: '3d',
-                                    onAdd: function (map, gl) {
-                                        addModel(oid, layerId, origin, height, rY, featype, path);
-                                    },
-                                    render: function (gl, matrix) {
-                                        //tb.update(); is not needed anymore if multiLayer : true
-                                    }
-                                };
-                                return customLayer3D;
-                            };
-
-                            function addModel(oid, layerId, origin, height, rY, featype, path) {
-                                let options = {
-                                    type: 'gltf',
-                                    obj: path, //model url
-                                    units: 'meters', //units in the default values are always in meters
-                                    scale: height, // set scale using height
-                                    rotation: { x: 90, y: rY, z: 0}, //default rotation
-                                    anchor: 'center'
-                                }
-                                tb.loadObj(options, function (model) {
-                                    model.setCoords(origin);
-                                    let l = map.getLayer(layerId);
-                                    model.addTooltip(
-                                       "<table id='tooltip3d'>" +
-                                        "<tr><th class='th1'>Type:</th>" + "<th class='th2'>" + featype + "</th></tr>" +
-                                        "<tr><th class='th1'>Object ID:</th>" + "<th class='th2'>" + oid + "</th></tr>" +
-                                        "<tr><th class='th1'>Height:</th>" + "<th class='th2'>" + height + " meters" + "</th></tr>" +
-                                        "<tr><th class='th1'>Coordinates:</th>" + "<th class='th2'>" + origin[0] + ", " + origin[1] + "</th></tr>" +
-                                        "</table>", true);
-                                    tb.add(model, layerId);
-                                });
-                            }
-                        });
-
-                        // button function for toggle 3D buildings
-                        function createButtons() {
-                            var link = document.createElement('a');
-                            link.href = '#';
-                            link.className = 'active';
-                            link.textContent = '3D Building';
-
-                            link.onclick = function (e) {
-                                var clickedLayer = '3dbuildings';
-                                e.preventDefault();
-                                e.stopPropagation();
-
-                                var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-
-                                // toggle layer visibility by changing the layout object's visibility property
-                                if (visibility === 'visible') {
-                                    map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-                                    this.className = '';
-                                    tb.toggleLayer(clickedLayer, false);
-
-                                } else {
-                                    this.className = 'active';
-                                    map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-                                    tb.toggleLayer(clickedLayer, true);
-                                }
-                            };
-
-                            var layers = document.getElementById('menu');
-                            layers.appendChild(link);
-
-                             // load "MENU" on map div
-                            const container = document.querySelector(".mapboxgl-ctrl-top-left");
-                            container.append(menu)
-                        }
-                    </script>
+                    <script type="module" src="js/main.js"></script>
                 </div>
             </div>
         </div>
     </section>
         
-        <!-- Services-->
+        <!-- Why CV-->
         <section class="page-section bg-light" id="services">
             <div class="container">
                 <div class="row text-center">
@@ -343,8 +114,8 @@
         <section class="page-section" id="portfolio">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="section-heading text-uppercase">'3A-3T' Methodology</h2>
-                    <h3 class="section-subheading text-muted">Technologies used for <span class="text-uppercase highlight-yellow">data acquisition</span> and <span class="text-uppercase highlight-yellow">data analytics</span> from GSV pano.</h3>
+                    <h2 class="section-heading text-uppercase margin-large-0">'3A-3T' Methodology</h2>
+                    <h3 class="section-subheading text-muted margin-large-0">Technologies used for <span class="text-uppercase highlight-yellow">data acquisition</span> and <span class="text-uppercase highlight-yellow">data analytics</span> from GSV pano.</h3>
                 </div>
                 <div class="row">
                     
@@ -371,7 +142,7 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/m2.jpg" alt="..." />
+                                <img class="img-fluid" src="assets/img/m2.jpg" alt="...Advance" />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Advance</div>
@@ -387,7 +158,7 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/m3.jpg" alt="..." />
+                                <img class="img-fluid" src="assets/img/m3.jpg" alt="...Assemble" />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Assemble</div>
@@ -403,7 +174,7 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/m4.jpg" alt="..." />
+                                <img class="img-fluid" src="assets/img/m4.jpg" alt="...Train" />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Train</div>
@@ -419,7 +190,7 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/m5.jpg" alt="..." />
+                                <img class="img-fluid" src="assets/img/m5.jpg" alt="...Transit" />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Transit</div>
@@ -429,13 +200,13 @@
                     </div>
 
                     <!-- Methodology item 6-->
-                    <div class="col-lg-4 col-sm-6">
+                    <div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
                         <div class="portfolio-item">
                             <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal6">
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/m6.jpg" alt="..." />
+                                <img class="img-fluid" src="assets/img/m6.jpg" alt="...Transform" />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Transform</div>
@@ -552,9 +323,9 @@
                             <img class="mx-auto rounded-circle" src="assets/img/kenny.jpg" alt="..." />
                             <h4>Kenny Yiu</h4>
                             <p class="text-muted">HKU Student; Senior Land Surveyor, LandsD</p>
-                            <a class="btn btn-dark btn-social mx-2" href="tel:+852xxxxxxxx" aria-label="Kenny Yiu Work Phone"><i class="fas fa-phone"></i></a>
-                            <a class="btn btn-dark btn-social mx-2" href="mailto:slsxxxx@landsd.gov.hk" aria-label="Kenny Yiu Email Address"><i class="fas fa-at"></i></a>
-                            <a class="btn btn-dark btn-social mx-2" href="https://github.com/xxxxxxxx" aria-label="Kenny Yiu GitHub"><i class="fab fa-github-alt"></i></a>
+                            <!--a class="btn btn-dark btn-social mx-2" href="tel:+852xxxxxxxx" aria-label="Kenny Yiu Work Phone"><i class="fas fa-phone"></i></a-->
+                            <a class="btn btn-dark btn-social mx-2" href="mailto:yknkenny@connect.hku.hk" aria-label="Kenny Yiu Email Address"><i class="fas fa-at"></i></a>
+                            <a class="btn btn-dark btn-social mx-2" href="https://github.com/yknkenny" aria-label="Kenny Yiu GitHub"><i class="fab fa-github-alt"></i></a>
                         </div>
                     </div>
                 </div>
@@ -564,7 +335,7 @@
             </div>
         </section>
 
-        <!-- Clients-->
+        <!-- Banners-->
         <div class="py-5 bg-light">
             <div class="container">
                 <div class="row align-items-center">
@@ -596,8 +367,7 @@
         </footer>
 
         <!-- Methodology Modals-->
-
-        <!-- Methodology item 1 modal popup-->
+        <!-- Methodology 1 popup-->
         <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -638,7 +408,7 @@
             </div>
         </div>
 
-        <!-- Methodology item 2 modal popup-->
+        <!-- Methodology 2 popup-->
         <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -660,7 +430,7 @@
                                         </li>
                                         <li class="text-start margin-large-1">
                                             <strong>Characteristics of Depth Map:</strong>
-                                            An encrypted depth map in a 256-by-512 array stores all depth information with respect to respective 360-pano view for geolocation purpose. The <span class="highlight-green">depth map</span> and <span class="highlight-green">surface normal vectors</span> of detected objects were <span class="highlight-green">were successfully unlocked by a Swedish developer</span> and transferred to an "Urban Jungle Street View" application for urban green and landscape design in some major cities around the world in 2014. Some opened <!--a href="https://stackoverflow.com/questions/52790436/convert-depth-map-base64-of-google-street-view-to-image"-->decryption libraries for Java and Python launguages are available.
+                                            An encrypted depth map in a 256-by-512 array stores all depth information with respect to respective 360-pano view for geolocation purpose. The <span class="highlight-green">depth map</span> and <span class="highlight-green">surface normal vectors</span> of detected objects were <span class="highlight-green">were successfully unlocked by a Swedish developer</span> and transferred to an "Urban Jungle Street View" application for urban green and landscape design in some major cities around the world in 2014. Some opened <a href="https://stackoverflow.com/questions/52790436/convert-depth-map-base64-of-google-street-view-to-image">decryption libraries</a> for Java and Python launguages are available.
                                         </li>
                                     </ul>
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
@@ -675,7 +445,7 @@
             </div>
         </div>
 
-        <!-- Methodology item 3 modal popup-->
+        <!-- methodology 3 popup-->
         <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -708,7 +478,7 @@
             </div>
         </div>
 
-        <!-- Methodology item 4 modal popup-->
+        <!-- Methodology 4 popup-->
         <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -749,7 +519,7 @@
             </div>
         </div>
 
-        <!-- Methodology item 5 modal popup-->
+        <!--Methodology 5 popup-->
         <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -786,7 +556,7 @@
             </div>
         </div>
 
-        <!-- Methodology item 6 modal popup-->
+        <!-- Methodology 6 popup-->
         <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -799,17 +569,7 @@
                                     <h2 class="text-uppercase">Object Transfer</h2>
                                     <p class="item-intro text-muted margin-large-1">Transferring recognized objects to 3D world</p>
                                     <img class="img-fluid d-block mx-auto line-height-1" src="assets/img/m6.jpg" alt="..." />
-                                    <!--p class="line-height-1">Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
-                                    <ul class="list-inline">
-                                        <li class="text-start margin-large-1">
-                                            <strong>Client:</strong>
-                                            Window
-                                        </li>
-                                        <li class="text-start margin-large-1">
-                                            <strong>Category:</strong>
-                                            Photography
-                                        </li>
-                                    </ul-->
+                                    <p class="line-height-1">The last step is to transfer the recognized objects located in each 2D coordinates (X, Y) of 360-pano image to the geographic coordinates (Latitude, Longitude) of WGS84 (or the Hong Kong 1980 Grid Cooridnates) with reference to the decrypted depth map information, the reduced yaw direction angle of GSV camera and the initial position of GSV nodel point.</p>
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
                                         <i class="fas fa-xmark me-1"></i>
                                         Close
@@ -821,5 +581,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- bootstrap js-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

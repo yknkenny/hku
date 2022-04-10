@@ -7374,7 +7374,7 @@ textarea.form-control-lg {
 }
 
 .mb-4 {
-  margin-bottom: 1.5rem !important;
+  margin-bottom: 1rem !important;
 }
 
 .mb-5 {
@@ -11311,7 +11311,7 @@ p {
   margin-bottom: 1rem;
 }
 .page-section h3.section-subheading, .page-section .section-subheading.h3 {
-  line-height: 1.45;
+  line-height: 1.4rem;
   font-size: 1.25rem;
   font-weight: 400;
   font-style: italic;
@@ -11409,7 +11409,6 @@ p {
   }
 }
 header.masthead {
-  height: 1100px;
   padding-top: 10.5rem;
   padding-bottom: 6rem;
   text-align: center;
@@ -11453,7 +11452,7 @@ header.masthead .masthead-heading {
   }
 }
 #portfolio .portfolio-item {
-  max-width: 26rem;
+  max-width: 25.5rem;
   margin-left: auto;
   margin-right: auto;
 }
@@ -11481,7 +11480,7 @@ header.masthead .masthead-heading {
   opacity: 1;
 }
 #portfolio .portfolio-item .portfolio-caption {
-  padding: 0.5rem;
+  padding: 0rem;
   text-align: center;
   background-color: #fff;
 }
@@ -11784,7 +11783,7 @@ section#contact form#contactForm :-ms-input-placeholder {
 
 #map {
   border: solid 2px lightgray;
-  min-height: 780px;
+  min-height: 690px;
 }
 
 .map-overlay {
@@ -11887,6 +11886,11 @@ background-color: #DF8F8F;
 .th2 {
   text-align: left;
   font-size: 16px; 
+}
+
+.margin-large-0 {
+  margin-bottom: 0.8rem !important;
+  line-height: 1.15;
 }
 
 .margin-large-1 {
